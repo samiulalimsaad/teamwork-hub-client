@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { ProjectInterface } from "../interfaces/Project.interface";
 import { createProject, deleteProject, fetchProjects } from "../services/api";
+import Project from "./Project";
 
 const initialState = {
     title: "",
@@ -79,6 +80,7 @@ const Projects: React.FC = () => {
                                         Delete
                                     </button>
                                 </div>
+                                <Project projectId={project._id} />
                             </div>
                             <div className="divider before:bg-accent/20 after:bg-accent/20"></div>
                         </a>
