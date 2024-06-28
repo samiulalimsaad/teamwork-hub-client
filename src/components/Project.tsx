@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
+import DocumentEditor from "./DocumentEditor";
 
 interface ProjectProps {
     projectId: string;
@@ -12,7 +13,7 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
     };
 
     return (
-        <fieldset className="border border-accent/20 p-4">
+        <fieldset className="p-4 border border-accent/20">
             <div className="space-y-4">
                 <input
                     type="text"
@@ -20,8 +21,9 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
                     onChange={handleChange}
                     placeholder="Document ID"
                     required
-                    className="input input-bordered w-full "
+                    className="w-full input input-bordered "
                 />
+                <DocumentEditor projectId={projectId} documentId={documentId} />
             </div>
         </fieldset>
     );
