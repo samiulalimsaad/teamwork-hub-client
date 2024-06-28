@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { ProjectInterface } from "../interfaces/Project.interface";
-import { createProject, deleteProject, fetchProjects } from "../services/api";
-import Project from "./Project";
+import { createProject, fetchProjects } from "../services/api/project";
 
 const initialState = {
     title: "",
@@ -28,11 +28,6 @@ const Projects: React.FC = () => {
         setNewProject({ title: "", description: "" });
     };
 
-    const handleDelete = async (id: string) => {
-        await deleteProject(id);
-        setProjects(projects.filter((project) => project._id !== id));
-    };
-
     const handleChange = (
         e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
@@ -49,7 +44,7 @@ const Projects: React.FC = () => {
                     onChange={handleChange}
                     placeholder="Title"
                     required
-                    className="input input-bordered w-full "
+                    className="w-full input input-bordered "
                 />
 
                 <textarea
@@ -57,30 +52,27 @@ const Projects: React.FC = () => {
                     value={newProject.description}
                     onChange={handleChange}
                     placeholder="Description"
-                    className="textarea textarea-bordered w-full"
+                    className="w-full textarea textarea-bordered"
                     required
                 />
-                <button className="btn btn-accent w-full" type="submit">
+                <button className="w-full btn btn-accent" type="submit">
                     Add Project
                 </button>
             </form>
-            <ul className="card w-3/5 rounded-box mx-auto space-y-8 my-8 border border-accent/10 p-4">
+            <ul className="w-3/5 p-4 mx-auto my-8 space-y-8 border card rounded-box border-accent/10">
                 {projects.map((project) => (
                     <li key={project._id}>
                         <a className="mx-auto">
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between">
                                     {project.title}{" "}
-                                    <button
+                                    <Link
+                                        to={`/project/${project._id}`}
                                         className="btn btn-accent btn-xs"
-                                        onClick={() =>
-                                            handleDelete(project._id)
-                                        }
                                     >
-                                        Delete
-                                    </button>
+                                        details
+                                    </Link>
                                 </div>
-                                <Project projectId={project._id} />
                             </div>
                             <div className="divider before:bg-accent/20 after:bg-accent/20"></div>
                         </a>

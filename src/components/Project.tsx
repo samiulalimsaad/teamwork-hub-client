@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
+import { useParams } from "react-router-dom";
 import DocumentEditor from "./DocumentEditor";
 import Feedback from "./Feedback";
 
@@ -6,7 +7,8 @@ interface ProjectProps {
     projectId: string;
 }
 
-const Project: React.FC<ProjectProps> = ({ projectId }) => {
+const Project: React.FC = () => {
+    const { id } = useParams();
     const [documentId, setDocumentId] = useState<string>("");
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -24,9 +26,9 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
                     required
                     className="w-full input input-bordered "
                 />
-                <DocumentEditor projectId={projectId} documentId={documentId} />
+                <DocumentEditor projectId={id!} documentId={documentId} />
                 <Feedback
-                    projectId={projectId}
+                    projectId={id!}
                     documentId={documentId}
                     userId="userId"
                 />
