@@ -1,6 +1,9 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { FeedbackInterface } from "../interfaces/Feedback.interface";
-import { fetchFeedbackByDocumentId } from "../services/api/feedback";
+import React, { FormEvent } from "react";
+import {
+    useAddFeedback,
+    useFetchFeedbackByDocumentId,
+} from "../services/hooks/feedback";
+import FeedbackBubble from "./FeedbackBubble";
 
 interface FeedbackProps {
     projectId: string;
@@ -8,38 +11,26 @@ interface FeedbackProps {
     userId: string;
 }
 
-const Feedback: React.FC<FeedbackProps> = ({
-    projectId,
-    documentId,
-    userId,
-}) => {
-    const [feedback, setFeedback] = useState<FeedbackInterface[]>([]);
-    const [newFeedback, setNewFeedback] = useState<string>("");
-    userId;
-    useEffect(() => {
-        const getFeedback = async () => {
-            const response = await fetchFeedbackByDocumentId(documentId);
-            setFeedback(response.data);
-        };
+const Feedback: React.FC<FeedbackProps> = ({ documentId }) => {
+    const { data: feedback } = useFetchFeedbackByDocumentId(documentId);
+    const addFeedback = useAddFeedback();
 
-        getFeedback();
-    }, [projectId, documentId]);
-
-    const handleSubmit = async (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setNewFeedback("");
-    };
-
-    const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setNewFeedback(e.target.value);
+        const form = e.currentTarget;
+        const feedbackData = {
+            content: form.feedback.value,
+            document: documentId,
+        };
+        addFeedback.mutate(feedbackData);
+        form.reset();
     };
 
     return (
         <div>
             <form onSubmit={handleSubmit}>
                 <textarea
-                    value={newFeedback}
-                    onChange={handleChange}
+                    name="feedback"
                     placeholder="Leave your feedback"
                     required
                     className="w-full textarea textarea-bordered"
@@ -49,8 +40,10 @@ const Feedback: React.FC<FeedbackProps> = ({
                 </button>
             </form>
             <ul>
-                {feedback?.map((fb) => (
-                    <li key={fb._id}>{fb.content}</li>
+                {feedback?.data?.map((fb) => (
+                    <li key={fb._id}>
+                        <FeedbackBubble feedback={fb} />
+                    </li>
                 ))}
             </ul>
         </div>
