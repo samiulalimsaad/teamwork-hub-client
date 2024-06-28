@@ -1,10 +1,12 @@
-import axios from "axios";
-import { ProjectInterface } from "../interfaces/Project.interface";
-
-const API = axios.create({ baseURL: "http://localhost:5000/api" });
+import { ProjectInterface } from "../../interfaces/Project.interface";
+import { API } from "../../utils/API";
 
 export const fetchProjects = (): Promise<{ data: ProjectInterface[] }> =>
     API.get("/projects");
+
+export const fetchProjectById = (
+    id: string
+): Promise<{ data: ProjectInterface }> => API.get(`/projects/${id}`);
 
 export const createProject = (
     newProject: Omit<ProjectInterface, "_id" | "documents">
