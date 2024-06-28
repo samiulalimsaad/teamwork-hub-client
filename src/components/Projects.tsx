@@ -17,6 +17,7 @@ const Projects: React.FC = () => {
             description,
         };
         createProject.mutate(newProject);
+        form.reset();
     };
 
     return (

@@ -6,14 +6,20 @@ export const fetchFeedbacks = (): Promise<{ data: FeedbackInterface[] }> =>
 
 export const fetchFeedbackByDocumentId = (
     id: string
-): Promise<{ data: FeedbackInterface[] }> => API.get(`/feedbacks/${id}`);
+): Promise<{ data: FeedbackInterface[] }> =>
+    API.get(`/feedbacks?documentId=${id}`);
 
 export const fetchFeedbackById = (
     id: string
 ): Promise<{ data: FeedbackInterface }> => API.get(`/feedbacks/${id}`);
 
+export interface addFeedbackInterface
+    extends Omit<
+        FeedbackInterface,
+        "_id" | "project" | "createdAt" | "updatedAt" | "createdBy"
+    > {}
 export const addFeedback = (
-    newFeedback: Omit<FeedbackInterface, "_id" | "documents" | "timestamp">
+    newFeedback: addFeedbackInterface
 ): Promise<{ data: FeedbackInterface }> => API.post("/feedbacks", newFeedback);
 
 export const updateFeedback = (
