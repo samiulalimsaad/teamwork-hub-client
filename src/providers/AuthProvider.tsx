@@ -11,7 +11,7 @@ interface AuthProviderProps {
     children: ReactNode;
 }
 
-interface AuthInfo {
+export interface AuthInfo {
     user: null | UserInterface;
     loading: boolean;
     createUserWithEmailAndPassword: (
