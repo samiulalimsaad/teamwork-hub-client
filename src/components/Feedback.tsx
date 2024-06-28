@@ -1,8 +1,10 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useEffect } from "react";
+import { FeedbackInterface } from "../interfaces/Feedback.interface";
 import {
     useAddFeedback,
     useFetchFeedbackByDocumentId,
 } from "../services/hooks/feedback";
+import { SOCKET } from "../utils/SOCKET";
 import FeedbackBubble from "./FeedbackBubble";
 
 interface FeedbackProps {
@@ -12,8 +14,25 @@ interface FeedbackProps {
 }
 
 const Feedback: React.FC<FeedbackProps> = ({ documentId }) => {
-    const { data: feedback } = useFetchFeedbackByDocumentId(documentId);
+    const { data: feedback, refetch } =
+        useFetchFeedbackByDocumentId(documentId);
     const addFeedback = useAddFeedback();
+
+    useEffect(() => {
+        SOCKET.emit("joinDocument", { documentId });
+
+        SOCKET.on("feedbackReceived", (data: FeedbackInterface) => {
+            console.log(data);
+            if (data._id === documentId) {
+                refetch();
+            }
+        });
+
+        return () => {
+            SOCKET.emit("leaveDocument", { documentId });
+            SOCKET.off("feedbackReceived");
+        };
+    }, [documentId, refetch]);
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -22,7 +41,9 @@ const Feedback: React.FC<FeedbackProps> = ({ documentId }) => {
             content: form.feedback.value,
             document: documentId,
         };
+
         addFeedback.mutate(feedbackData);
+        SOCKET.emit("newFeedback", { ...feedbackData, _id: documentId });
         form.reset();
     };
 

@@ -7,6 +7,7 @@ import {
     useFetchDocumentById,
     useUpdateDocument,
 } from "../services/hooks/document";
+import { SOCKET } from "../utils/SOCKET";
 
 interface DocumentEditorProps {
     projectId: string;
@@ -17,13 +18,13 @@ const DocumentEditor: React.FC<DocumentEditorProps> = ({ documentId }) => {
     const { data: document } = useFetchDocumentById(documentId);
     const updateDocument = useUpdateDocument();
 
-    const [title, setTitle] = useState<string>(document?.data.title || "");
+    const [title, setTitle] = useState<string>(document?.data?.title || "");
     const [content, setContent] = useState<string>(
-        document?.data.content || ""
+        document?.data?.content || ""
     );
 
     const updateTitle = useDebounce(updateTitleCB, 1500, [title]);
-    const updateContent = useDebounce(updateContentCB, 1500, [title]);
+    const updateContent = useDebounce(updateContentCB, 1500, [content]);
 
     useEffect(() => {
         if (document?.data) {
@@ -46,6 +47,23 @@ const DocumentEditor: React.FC<DocumentEditorProps> = ({ documentId }) => {
         });
     }
 
+    useEffect(() => {
+        SOCKET.emit("joinDocument", { documentId });
+
+        SOCKET.on("documentEdited", (data: DocumentInterface) => {
+            console.log(data);
+            if (data._id === documentId) {
+                setContent(data.content);
+                setTitle(data.title);
+            }
+        });
+
+        return () => {
+            SOCKET.emit("leaveDocument", { documentId });
+            SOCKET.off("documentEdited");
+        };
+    }, [documentId]);
+
     const handleChange = async (value: string) => {
         setContent(value);
         const updatedDocument = {
@@ -53,6 +71,11 @@ const DocumentEditor: React.FC<DocumentEditorProps> = ({ documentId }) => {
             content: value,
         };
         updateContent(updatedDocument);
+        SOCKET.emit("editDocument", {
+            _id: documentId,
+            title,
+            content: value,
+        });
     };
 
     const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -62,16 +85,22 @@ const DocumentEditor: React.FC<DocumentEditorProps> = ({ documentId }) => {
             content,
         };
         updateTitle(updatedDocument);
+        SOCKET.emit("editDocument", {
+            _id: documentId,
+            title: e.target.value,
+            content,
+        });
     };
+
     return (
         <div>
             <input
                 type="text"
                 value={title}
                 onChange={handleTitleChange}
-                placeholder="Document ID"
+                placeholder="Document title"
                 required
-                className="w-full input input-bordered "
+                className="w-full input input-bordered"
             />
             <ReactQuill
                 value={content}
