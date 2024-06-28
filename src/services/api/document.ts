@@ -1,15 +1,23 @@
 import { DocumentInterface } from "../../interfaces/Document.interface";
 import { API } from "../../utils/API";
 
-export const fetchDocuments = (): Promise<{ data: DocumentInterface[] }> =>
-    API.get("/documents");
+export const fetchDocuments = (
+    projectId: string
+): Promise<{ data: DocumentInterface[] }> =>
+    API.get(`/documents?projectId=${projectId}`);
 
 export const fetchDocumentById = (
     id: string
 ): Promise<{ data: DocumentInterface }> => API.get(`/documents/${id}`);
 
+export interface createDocumentInterface
+    extends Omit<
+        DocumentInterface,
+        "_id" | "feedbacks" | "createdAt" | "updatedAt"
+    > {}
+
 export const createDocument = (
-    newDocument: Omit<DocumentInterface, "_id" | "documents">
+    newDocument: createDocumentInterface
 ): Promise<{ data: DocumentInterface }> => API.post("/documents", newDocument);
 
 export const updateDocument = (

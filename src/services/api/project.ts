@@ -8,8 +8,14 @@ export const fetchProjectById = (
     id: string
 ): Promise<{ data: ProjectInterface }> => API.get(`/projects/${id}`);
 
+export interface createProjectInterface
+    extends Omit<
+        ProjectInterface,
+        "_id" | "documents" | "createdAt" | "updatedAt"
+    > {}
+
 export const createProject = (
-    newProject: Omit<ProjectInterface, "_id" | "documents">
+    newProject: createProjectInterface
 ): Promise<{ data: ProjectInterface }> => API.post("/projects", newProject);
 
 export const updateProject = (
