@@ -1,6 +1,6 @@
-export interface FeedbackInterface {
-    _id: string;
+import { CommonInterface } from "./common.interface";
+
+export interface FeedbackInterface extends CommonInterface {
     user: string;
     content: string;
-    timestamp: Date;
 }

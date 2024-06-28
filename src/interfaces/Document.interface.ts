@@ -1,9 +1,9 @@
 import { FeedbackInterface } from "./Feedback.interface";
+import { CommonInterface } from "./common.interface";
 
-export interface DocumentInterface {
-    _id: string;
+export interface DocumentInterface extends CommonInterface {
     title: string;
     content: string;
-    lastUpdated: Date;
-    feedback: FeedbackInterface[];
+    project?: string;
+    feedbacks: FeedbackInterface[];
 }
