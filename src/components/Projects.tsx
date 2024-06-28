@@ -1,7 +1,7 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
-import { ProjectInterface } from "../interfaces/Project.interface";
-import { createProject, fetchProjects } from "../services/api/project";
+import { createProject } from "../services/api/project";
+import { useFetchProjects } from "../services/hooks/project";
 
 const initialState = {
     title: "",
@@ -9,22 +9,14 @@ const initialState = {
 };
 
 const Projects: React.FC = () => {
-    const [projects, setProjects] = useState<ProjectInterface[]>([]);
+    const { data: projects, refetch } = useFetchProjects();
     const [newProject, setNewProject] =
         useState<typeof initialState>(initialState);
 
-    useEffect(() => {
-        const getProjects = async () => {
-            const response = await fetchProjects();
-            setProjects(response.data);
-        };
-        getProjects();
-    }, []);
-
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const response = await createProject(newProject);
-        setProjects([...projects, response.data]);
+        await createProject(newProject);
+        await refetch();
         setNewProject({ title: "", description: "" });
     };
 
@@ -59,26 +51,30 @@ const Projects: React.FC = () => {
                     Add Project
                 </button>
             </form>
-            <ul className="w-3/5 p-4 mx-auto my-8 space-y-8 border card rounded-box border-accent/10">
-                {projects.map((project) => (
-                    <li key={project._id}>
-                        <a className="mx-auto">
-                            <div className="space-y-4">
-                                <div className="flex items-center justify-between">
-                                    {project.title}{" "}
-                                    <Link
-                                        to={`/project/${project._id}`}
-                                        className="btn btn-accent btn-xs"
-                                    >
-                                        details
-                                    </Link>
+            <div>
+                <h3 className="my-8 text-xl text-center">Projects</h3>
+                <div className="divider"></div>
+                <ul className="w-3/5 p-4 mx-auto my-8 space-y-8 border card rounded-box border-accent/10">
+                    {projects?.data?.map((project) => (
+                        <li key={project._id}>
+                            <a className="mx-auto">
+                                <div className="space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        {project.title}{" "}
+                                        <Link
+                                            to={`/project/${project._id}`}
+                                            className="btn btn-accent btn-xs"
+                                        >
+                                            details
+                                        </Link>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="divider before:bg-accent/20 after:bg-accent/20"></div>
-                        </a>
-                    </li>
-                ))}
-            </ul>
+                                <div className="divider before:bg-accent/20 after:bg-accent/20"></div>
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 };
