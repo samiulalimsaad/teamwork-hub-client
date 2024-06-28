@@ -51,7 +51,6 @@ const DocumentEditor: React.FC<DocumentEditorProps> = ({ documentId }) => {
         SOCKET.emit("joinDocument", { documentId });
 
         SOCKET.on("documentEdited", (data: DocumentInterface) => {
-            console.log(data);
             if (data._id === documentId) {
                 setContent(data.content);
                 setTitle(data.title);

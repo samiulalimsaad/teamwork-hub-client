@@ -43,8 +43,10 @@ const Feedback: React.FC<FeedbackProps> = ({ documentId }) => {
         };
 
         addFeedback.mutate(feedbackData);
-        SOCKET.emit("newFeedback", { ...feedbackData, _id: documentId });
-        form.reset();
+        setTimeout(() => {
+            SOCKET.emit("newFeedback", { ...feedbackData, _id: documentId });
+            form.reset();
+        }, 1500);
     };
 
     return (
