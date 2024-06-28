@@ -1,7 +1,8 @@
-import { ReactNode, createContext, useState } from "react";
+import { ReactNode, createContext, useEffect, useState } from "react";
 import { UserInterface } from "../interfaces/User.interface";
 import {
     useCreateUser,
+    useCurrentUser,
     useLogInUser,
     useLogOutUser,
     useUpdateUser,
@@ -30,6 +31,7 @@ export interface AuthInfo {
 export const AuthContext = createContext<AuthInfo | null>(null);
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+    const { data: me } = useCurrentUser();
     const [user, setUser] = useState<UserInterface | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -37,6 +39,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const signInMutation = useLogInUser();
     const logOutMutation = useLogOutUser();
     const updateUserMutation = useUpdateUser();
+
+    useEffect(() => {
+        if (me?.data) {
+            setUser(me?.data);
+            setLoading(false);
+        }
+    }, [me?.data]);
 
     const createUserWithEmailAndPassword = async (
         name: string,
@@ -70,6 +79,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const logOut = async () => {
         setLoading(true);
         await logOutMutation.mutateAsync();
+        setUser(null);
         setLoading(false);
     };
 
@@ -86,6 +96,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setLoading(false);
         return data;
     };
+
+    console.log({ user });
 
     const authInfo: AuthInfo = {
         user,

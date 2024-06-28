@@ -4,6 +4,7 @@ import {
     deleteUser,
     fetchUserById,
     fetchUsers,
+    getCurrentUser,
     logInUser,
     logOutUser,
     updateUser,
@@ -99,5 +100,12 @@ export const useLogOutUser = () => {
         onError: (error) => {
             toast.error(error.message);
         },
+    });
+};
+
+export const useCurrentUser = () => {
+    return useQuery({
+        queryKey: ["getCurrentUser"],
+        queryFn: getCurrentUser,
     });
 };

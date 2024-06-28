@@ -4,6 +4,9 @@ import { API } from "../../utils/API";
 export const fetchUsers = (): Promise<{ data: UserInterface[] }> =>
     API.get("/users");
 
+export const getCurrentUser = (): Promise<{ data: UserInterface }> =>
+    API.get("/currentUser");
+
 export const fetchUserById = (id: string): Promise<{ data: UserInterface }> =>
     API.get(`/users/${id}`);
 
