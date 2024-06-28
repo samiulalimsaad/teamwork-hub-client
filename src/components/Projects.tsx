@@ -41,7 +41,7 @@ const Projects: React.FC = () => {
 
     return (
         <div>
-            <form onSubmit={handleSubmit} className="w-1/3 mx-auto space-y-4">
+            <form onSubmit={handleSubmit} className="w-3/5 mx-auto space-y-4">
                 <input
                     type="text"
                     name="title"
@@ -64,7 +64,7 @@ const Projects: React.FC = () => {
                     Add Project
                 </button>
             </form>
-            <ul className="card w-1/3 rounded-box mx-auto space-y-8 my-8 border border-accent/10 p-4">
+            <ul className="card w-3/5 rounded-box mx-auto space-y-8 my-8 border border-accent/10 p-4">
                 {projects.map((project) => (
                     <li key={project._id}>
                         <a className="mx-auto">
