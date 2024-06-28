@@ -7,8 +7,14 @@ export const fetchUsers = (): Promise<{ data: UserInterface[] }> =>
 export const fetchUserById = (id: string): Promise<{ data: UserInterface }> =>
     API.get(`/users/${id}`);
 
+export interface createUserInterface
+    extends Omit<
+        UserInterface,
+        "_id" | "projects" | "createdAt" | "updatedAt"
+    > {}
+
 export const createUser = (
-    newUser: Omit<UserInterface, "_id" | "documents">
+    newUser: createUserInterface
 ): Promise<{ data: UserInterface }> => API.post("/users/register", newUser);
 
 export const updateUser = (
@@ -19,8 +25,14 @@ export const updateUser = (
 export const deleteUser = (id: string): Promise<void> =>
     API.delete(`/users/${id}`);
 
+export interface logInUserInterface
+    extends Omit<
+        UserInterface,
+        "_id" | "projects" | "createdAt" | "updatedAt" | "name"
+    > {}
+
 export const logInUser = (
-    user: Omit<UserInterface, "_id" | "documents" | "name">
+    user: logInUserInterface
 ): Promise<{ data: UserInterface }> => API.post("/users/login", user);
 
 export const logOutUser = (): Promise<{ data: UserInterface }> =>
