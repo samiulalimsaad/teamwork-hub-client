@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import { DocumentInterface } from "../../interfaces/Document.interface";
 import {
     createDocument,
@@ -8,10 +9,10 @@ import {
     updateDocument,
 } from "../api/document";
 
-export const useFetchDocuments = () => {
+export const useFetchDocuments = (projectId: string) => {
     return useQuery({
-        queryKey: ["documents"],
-        queryFn: fetchDocuments,
+        queryKey: ["documents", projectId],
+        queryFn: () => fetchDocuments(projectId),
     });
 };
 
@@ -24,11 +25,13 @@ export const useFetchDocumentById = (id: string) => {
 
 export const useCreateDocument = () => {
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
 
     return useMutation({
         mutationFn: createDocument,
-        onSuccess: () => {
+        onSuccess: ({ data }) => {
             queryClient.invalidateQueries({ queryKey: ["documents"] });
+            navigate(`/project/document/${data._id}`);
         },
     });
 };
