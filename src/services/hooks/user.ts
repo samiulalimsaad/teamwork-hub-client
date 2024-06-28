@@ -9,6 +9,7 @@ import {
     updateUser,
 } from "../api/user";
 
+import { toast } from "react-toastify";
 import { UserInterface } from "../../interfaces/User.interface";
 
 export const useFetchUsers = () => {
@@ -32,6 +33,10 @@ export const useCreateUser = () => {
         mutationFn: createUser,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["users"] });
+            toast.success("User created successfully!");
+        },
+        onError: (error) => {
+            toast.error(error.message);
         },
     });
 };
@@ -50,6 +55,10 @@ export const useUpdateUser = () => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["users"] });
             queryClient.invalidateQueries({ queryKey: ["user"] });
+            toast.success("User info updated!");
+        },
+        onError: (error) => {
+            toast.error(error.message);
         },
     });
 };
@@ -61,6 +70,10 @@ export const useDeleteUser = () => {
         mutationFn: (id: string) => deleteUser(id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["users"] });
+            toast.warn("User deleted successfully!");
+        },
+        onError: (error) => {
+            toast.error(error.message);
         },
     });
 };
@@ -68,11 +81,23 @@ export const useDeleteUser = () => {
 export const useLogInUser = () => {
     return useMutation({
         mutationFn: logInUser,
+        onSuccess: () => {
+            toast.success("Successfully Logged in!");
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
     });
 };
 
 export const useLogOutUser = () => {
     return useMutation({
         mutationFn: logOutUser,
+        onSuccess: () => {
+            toast.success("User created successfully!");
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
     });
 };
