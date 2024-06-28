@@ -97,8 +97,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         return data;
     };
 
-    console.log({ user });
-
     const authInfo: AuthInfo = {
         user,
         loading,

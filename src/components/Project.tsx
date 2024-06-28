@@ -16,6 +16,7 @@ const Project: React.FC = () => {
                     documentId={documentId!}
                     userId="userId"
                 />
+                <div className="my-8">{/* <Chat /> */}</div>
             </div>
         </fieldset>
     );

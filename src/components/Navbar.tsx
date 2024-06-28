@@ -28,7 +28,9 @@ const Navbar = () => {
                         </svg>
                     </div>
                 </div>
-                <a className="text-xl btn btn-ghost">TeamworkHub</a>
+                <Link to="/" className="text-xl btn btn-ghost">
+                    TeamworkHub
+                </Link>
             </div>
             <div className="hidden navbar-center lg:flex"></div>
             <div className="navbar-end">
