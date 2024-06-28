@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { FeedbackInterface } from "../interfaces/Feedback.interface";
-import { addFeedback, fetchFeedback } from "../services/api";
+import { fetchFeedbackByDocumentId } from "../services/api/feedback";
 
 interface FeedbackProps {
     projectId: string;
@@ -15,10 +15,10 @@ const Feedback: React.FC<FeedbackProps> = ({
 }) => {
     const [feedback, setFeedback] = useState<FeedbackInterface[]>([]);
     const [newFeedback, setNewFeedback] = useState<string>("");
-
+    userId;
     useEffect(() => {
         const getFeedback = async () => {
-            const response = await fetchFeedback(projectId, documentId);
+            const response = await fetchFeedbackByDocumentId(documentId);
             setFeedback(response.data);
         };
 
@@ -27,8 +27,6 @@ const Feedback: React.FC<FeedbackProps> = ({
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        const feedbackData = { user: userId, content: newFeedback };
-        await addFeedback(projectId, documentId, feedbackData);
         setNewFeedback("");
     };
 
