@@ -1,29 +1,22 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { FormEvent } from "react";
 import { Link } from "react-router-dom";
-import { createProject } from "../services/api/project";
-import { useFetchProjects } from "../services/hooks/project";
-
-const initialState = {
-    title: "",
-    description: "",
-};
+import { useCreateProject, useFetchProjects } from "../services/hooks/project";
 
 const Projects: React.FC = () => {
-    const { data: projects, refetch } = useFetchProjects();
-    const [newProject, setNewProject] =
-        useState<typeof initialState>(initialState);
+    const { data: projects } = useFetchProjects();
+    const createProject = useCreateProject();
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        await createProject(newProject);
-        await refetch();
-        setNewProject({ title: "", description: "" });
-    };
+        const form = e.currentTarget;
+        const title = form.projectTitle.value;
+        const description = form.description.value;
 
-    const handleChange = (
-        e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        setNewProject({ ...newProject, [e.target.name]: e.target.value });
+        const newProject = {
+            title,
+            description,
+        };
+        createProject.mutate(newProject);
     };
 
     return (
@@ -31,9 +24,7 @@ const Projects: React.FC = () => {
             <form onSubmit={handleSubmit} className="w-3/5 mx-auto space-y-4">
                 <input
                     type="text"
-                    name="title"
-                    value={newProject.title}
-                    onChange={handleChange}
+                    name="projectTitle"
                     placeholder="Title"
                     required
                     className="w-full input input-bordered "
@@ -41,8 +32,6 @@ const Projects: React.FC = () => {
 
                 <textarea
                     name="description"
-                    value={newProject.description}
-                    onChange={handleChange}
                     placeholder="Description"
                     className="w-full textarea textarea-bordered"
                     required
