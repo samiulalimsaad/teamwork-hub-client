@@ -26,12 +26,7 @@ const FeedbackBubble: React.FC<FeedbackBubbleProps> = ({ feedback }) => {
                     </div>
                 </div>
 
-                <div className="chat-header">
-                    {feedback.createdBy.name}
-                    <time className="text-xs opacity-50">
-                        {moment(feedback.createdAt).fromNow()}
-                    </time>
-                </div>
+                <div className="chat-header">{feedback.createdBy.name}</div>
                 <div
                     className={`chat-bubble ${
                         user?._id === feedback.createdBy._id
@@ -40,6 +35,11 @@ const FeedbackBubble: React.FC<FeedbackBubbleProps> = ({ feedback }) => {
                     }`}
                 >
                     {feedback.content}
+                </div>
+                <div className="chat-footer">
+                    <time className="text-xs opacity-50">
+                        {moment(feedback.createdAt).fromNow()}
+                    </time>
                 </div>
             </div>
         </div>
