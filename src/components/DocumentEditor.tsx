@@ -49,10 +49,14 @@ const DocumentEditor: React.FC<DocumentEditorProps> = ({ documentId }) => {
     useEffect(() => {
         SOCKET.emit("joinDocument", { documentId });
 
+        let tout: NodeJS.Timeout | null = null;
         SOCKET.on("documentEdited", (data: DocumentInterface) => {
             if (data._id === documentId) {
-                setContent(data.content);
-                setTitle(data.title);
+                if (tout) clearTimeout(tout);
+                tout = setTimeout(() => {
+                    setContent(data.content);
+                    setTitle(data.title);
+                }, 500);
             }
         });
 
