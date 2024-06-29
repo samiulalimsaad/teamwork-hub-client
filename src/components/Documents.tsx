@@ -1,14 +1,18 @@
-import React from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import {
     useCreateDocument,
     useFetchDocuments,
 } from "../services/hooks/document";
+import { Modal } from "../utils/ui/Modal";
+import Document from "./Document";
 
 const Documents: React.FC = () => {
     const { id: projectId } = useParams();
     const { data: documents } = useFetchDocuments(projectId!);
     const createDocument = useCreateDocument();
+
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleCreateDocument = async () => {
         const newDocument = {
@@ -21,39 +25,48 @@ const Documents: React.FC = () => {
 
     return (
         <div>
-            <div>
+            <div className="flex items-center justify-between mt-8">
+                <h3 className="text-xl text-center ">Projects</h3>
                 <button
-                    className="w-full btn btn-accent"
-                    onClick={handleCreateDocument}
+                    className="btn btn-accent btn-xs"
+                    // onClick={handleCreateDocument}
+                    onClick={() => setIsOpen(true)}
                 >
-                    New Document
+                    New
                 </button>
             </div>
 
             <div>
-                <h3 className="my-8 text-xl text-center">Projects</h3>
                 <div className="divider"></div>
-                <ul className="w-3/5 p-4 mx-auto my-8 space-y-8 border card rounded-box border-accent/10">
+                <ul className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                     {documents?.data?.map((doc) => (
                         <li key={doc._id}>
-                            <a className="mx-auto">
-                                <div className="space-y-4">
-                                    <div className="flex items-center justify-between">
-                                        {doc.title}{" "}
-                                        <Link
-                                            to={`/project/document/${doc._id}`}
-                                            className="btn btn-accent btn-xs"
-                                        >
-                                            Edit
-                                        </Link>
-                                    </div>
-                                </div>
-                                <div className="divider before:bg-accent/20 after:bg-accent/20"></div>
-                            </a>
+                            <Document document={doc} />
                         </li>
                     ))}
                 </ul>
             </div>
+
+            <Modal title="Do you want create a new Document?" isOpen={isOpen}>
+                <div>
+                    <p className="py-4 text-center">Are you agree?</p>
+
+                    <div className="flex items-center justify-center gap-4">
+                        <button
+                            className="btn btn-info btn-sm"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            Close
+                        </button>
+                        <button
+                            className="btn btn-accent btn-sm"
+                            onClick={handleCreateDocument}
+                        >
+                            Yes
+                        </button>
+                    </div>
+                </div>
+            </Modal>
         </div>
     );
 };
