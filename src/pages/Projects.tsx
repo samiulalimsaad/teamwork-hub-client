@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import NewProject from "../components/NewProject";
-import { useFetchProjects } from "../services/hooks/project";
+import NewProject from "../components/Project/NewProject";
+import { useDeleteProject, useFetchProjects } from "../services/hooks/project";
 import { Modal } from "../utils/ui/Modal";
 
 const Projects: React.FC = () => {
     const { data: projects } = useFetchProjects();
     const [isOpen, setIsOpen] = useState(false);
+    const deleteProject = useDeleteProject();
+
     return (
         <div>
             <div className="flex items-center justify-between p-4 mt-8 bg-accent/10">
                 <h3 className="text-xl text-center ">Projects</h3>
                 <button
                     className="btn btn-accent btn-xs"
-                    // onClick={handleCreateDocument}
                     onClick={() => setIsOpen(true)}
                 >
                     New
@@ -27,13 +28,25 @@ const Projects: React.FC = () => {
                             <div className="mx-auto ">
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between">
-                                        {project.title}{" "}
-                                        <Link
-                                            to={`/project/${project._id}`}
-                                            className="btn btn-accent btn-xs"
-                                        >
-                                            details
-                                        </Link>
+                                        <p>{project.title}</p>
+                                        <div className="flex items-center gap-4">
+                                            <button
+                                                className="btn btn-warning btn-xs"
+                                                onClick={() =>
+                                                    deleteProject.mutate(
+                                                        project._id
+                                                    )
+                                                }
+                                            >
+                                                Delete
+                                            </button>
+                                            <Link
+                                                to={`/project/${project._id}`}
+                                                className="btn btn-accent btn-xs"
+                                            >
+                                                details
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="divider before:bg-accent/20 after:bg-accent/20"></div>

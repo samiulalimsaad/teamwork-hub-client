@@ -1,12 +1,15 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import { DocumentInterface } from "../../interfaces/Document.interface";
+import { useDeleteDocument } from "../../services/hooks/document";
 
 interface DocumentProps {
     document: DocumentInterface;
 }
 
 const Document: FC<DocumentProps> = ({ document }) => {
+    const deleteDocument = useDeleteDocument();
+
     return (
         <div className="h-full shadow-xl card card-compact bg-base-100">
             <div className="card-body">
@@ -18,10 +21,16 @@ const Document: FC<DocumentProps> = ({ document }) => {
                 </figure>
                 <h2 className="py-4 truncate card-title">{document.title}</h2>
 
-                <div className="justify-end mt-auto card-actions">
+                <div className="justify-between mt-auto card-actions">
+                    <button
+                        className="w-5/12 btn btn-warning btn-xs btn-outline"
+                        onClick={() => deleteDocument.mutate(document._id)}
+                    >
+                        Delete
+                    </button>
                     <Link
                         to={`/project/document/${document._id}`}
-                        className="w-full btn btn-accent btn-xs btn-outline"
+                        className="w-5/12 btn btn-accent btn-xs btn-outline"
                     >
                         Edit
                     </Link>

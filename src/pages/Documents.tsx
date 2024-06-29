@@ -49,14 +49,12 @@ const Documents: React.FC = () => {
 
             <Modal title="Do you want create a new Document?" isOpen={isOpen}>
                 <div>
-                    <p className="py-4 text-center">Are you agree?</p>
-
                     <div className="flex items-center justify-center gap-4">
                         <button
                             className="btn btn-info btn-sm"
                             onClick={() => setIsOpen(false)}
                         >
-                            Close
+                            No
                         </button>
                         <button
                             className="btn btn-accent btn-sm"
