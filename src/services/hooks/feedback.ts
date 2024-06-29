@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 import { FeedbackInterface } from "../../interfaces/Feedback.interface";
 import {
     addFeedback,
@@ -37,6 +38,7 @@ export const useAddFeedback = () => {
         mutationFn: addFeedback,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["feedbacks"] });
+            toast.success("Feedback added successfully!");
         },
     });
 };

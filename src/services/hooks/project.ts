@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 import { ProjectInterface } from "../../interfaces/Project.interface";
 import {
     createProject,
@@ -29,6 +30,7 @@ export const useCreateProject = () => {
         mutationFn: createProject,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["projects"] });
+            toast.success("New Project created successfully!");
         },
     });
 };

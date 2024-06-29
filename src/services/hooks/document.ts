@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { DocumentInterface } from "../../interfaces/Document.interface";
 import {
     createDocument,
@@ -31,6 +32,7 @@ export const useCreateDocument = () => {
         mutationFn: createDocument,
         onSuccess: ({ data }) => {
             queryClient.invalidateQueries({ queryKey: ["documents"] });
+            toast.success("Document added successfully!");
             navigate(`/project/document/${data._id}`);
         },
     });
