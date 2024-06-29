@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
+import Chat from "../components/Chat";
 import DocumentEditor from "../components/DocumentEditor";
 import Feedback from "../components/Feedback";
+
+const tabs = ["Feedbacks", "Discussion"] as const;
 
 const Project: React.FC = () => {
     const { id } = useParams();
     const { id: documentId } = useParams();
+    const [tab, setTab] = useState<string>(tabs[0]);
 
     return (
         <fieldset className="h-[calc(100vh-4rem)] p-4">
@@ -14,13 +18,30 @@ const Project: React.FC = () => {
                     <DocumentEditor projectId={id!} documentId={documentId!} />
                 </div>
                 <div className="col-span-4 border">
-                    <Feedback
-                        projectId={id!}
-                        documentId={documentId!}
-                        userId="userId"
-                    />
+                    <div role="tablist" className="tabs tabs-boxed">
+                        {tabs.map((t) => (
+                            <button
+                                role="tab"
+                                className={`tab ${
+                                    tab === t ? "bg-accent" : ""
+                                }`}
+                                onClick={() => setTab(t)}
+                            >
+                                {t}
+                            </button>
+                        ))}
+                    </div>
+                    <div>
+                        {tab === tabs[0] && (
+                            <Feedback
+                                projectId={id!}
+                                documentId={documentId!}
+                                userId="userId"
+                            />
+                        )}
+                        {tab === tabs[1] && <Chat />}
+                    </div>
                 </div>
-                <div className="my-8">{/* <Chat /> */}</div>
             </div>
         </fieldset>
     );

@@ -10,10 +10,6 @@ const Chat: React.FC = () => {
         SOCKET.on("receiveMessage", (message: string) => {
             setMessages((prevMessages) => [...prevMessages, message]);
         });
-
-        return () => {
-            SOCKET.disconnect();
-        };
     }, []);
 
     const sendMessage = () => {
