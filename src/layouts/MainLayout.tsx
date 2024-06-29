@@ -19,7 +19,7 @@ const MainLayout = () => {
 
     return (
         <div>
-            <div className="bg-accent">
+            <div className="sticky top-0 bg-accent">
                 <Navbar />
             </div>
             <div className="w-full mx-auto sm:w-3/5">

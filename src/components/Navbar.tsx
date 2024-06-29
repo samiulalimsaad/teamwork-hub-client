@@ -4,7 +4,7 @@ import { useAuth } from "../providers/hooks/auth";
 const Navbar = () => {
     const { user, logOut } = useAuth();
     return (
-        <div className="w-full mx-auto navbar sm:w-3/5">
+        <div className="w-full mx-auto  navbar sm:w-3/5">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div

@@ -10,13 +10,13 @@ const Document: FC<DocumentProps> = ({ document }) => {
     return (
         <div className="h-full shadow-xl card card-compact bg-base-100">
             <div className="card-body">
-                <figure className="p-4 blur-[1px] select-none h-52 border">
+                <figure className="p-4 blur-[2px] select-none h-52 border">
                     <div
                         className="text-wrap"
                         dangerouslySetInnerHTML={{ __html: document.content }}
                     ></div>
                 </figure>
-                <h2 className="truncate card-title">{document.title}</h2>
+                <h2 className="py-4 truncate card-title">{document.title}</h2>
 
                 <div className="justify-end mt-auto card-actions">
                     <Link
