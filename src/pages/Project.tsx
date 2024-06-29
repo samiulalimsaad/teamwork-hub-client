@@ -20,6 +20,7 @@ const Project: React.FC = () => {
                     <div role="tablist" className="tabs tabs-boxed">
                         {tabs.map((t) => (
                             <button
+                                key={t}
                                 role="tab"
                                 className={`tab ${
                                     tab === t ? "bg-accent" : ""
