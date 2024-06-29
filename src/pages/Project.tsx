@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import DocumentEditor from "./DocumentEditor";
-import Feedback from "./Feedback";
+import DocumentEditor from "../components/DocumentEditor";
+import Feedback from "../components/Feedback";
 
 const Project: React.FC = () => {
     const { id } = useParams();

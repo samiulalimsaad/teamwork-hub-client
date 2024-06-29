@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import NewProject from "../components/NewProject";
 import { useFetchProjects } from "../services/hooks/project";
 import { Modal } from "../utils/ui/Modal";
-import NewProject from "./newProject";
 
 const Projects: React.FC = () => {
     const { data: projects } = useFetchProjects();
     const [isOpen, setIsOpen] = useState(false);
     return (
         <div>
-            <div className="flex items-center justify-between mt-8">
+            <div className="flex items-center justify-between p-4 mt-8 bg-accent/10">
                 <h3 className="text-xl text-center ">Projects</h3>
                 <button
                     className="btn btn-accent btn-xs"
@@ -21,7 +21,7 @@ const Projects: React.FC = () => {
             </div>
             <div className="divider"></div>
             <div>
-                <ul className="w-3/5 p-4 mx-auto my-8 space-y-8 border card rounded-box border-accent/10">
+                <ul className="p-4 mx-auto my-8 space-y-8 border card rounded-box border-accent/10">
                     {projects?.data?.map((project) => (
                         <li key={project._id}>
                             <div className="mx-auto ">

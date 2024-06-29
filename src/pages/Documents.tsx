@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
+import Document from "../components/Document";
 import {
     useCreateDocument,
     useFetchDocuments,
 } from "../services/hooks/document";
 import { Modal } from "../utils/ui/Modal";
-import Document from "./Document";
 
 const Documents: React.FC = () => {
     const { id: projectId } = useParams();
