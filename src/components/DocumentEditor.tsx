@@ -104,7 +104,7 @@ const DocumentEditor: React.FC<DocumentEditorProps> = ({ documentId }) => {
             <ReactQuill
                 value={content}
                 onChange={handleChange}
-                className="w-full textarea textarea-bordered"
+                className="w-full h-[calc(90vh-4rem)] textarea textarea-bordered overflow-y-scroll"
             />
         </div>
     );
