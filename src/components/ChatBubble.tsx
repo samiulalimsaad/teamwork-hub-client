@@ -9,8 +9,6 @@ interface FeedbackBubbleProps {
 const ChatBubble: React.FC<FeedbackBubbleProps> = ({ feedback }) => {
     const { user } = useAuth();
 
-    console.log({ feedback, user });
-
     return (
         <div>
             <div
@@ -28,15 +26,17 @@ const ChatBubble: React.FC<FeedbackBubbleProps> = ({ feedback }) => {
                                 : "bg-accent text-info-content"
                         }`}
                     >
-                        <span className="text-2xl">
+                        <span className="text-2xl select-none drop-shadow-md">
                             {feedback.createdBy.name[0].toUpperCase()}
                         </span>
                     </div>
                 </div>
 
-                <div className="chat-header">{feedback.createdBy.name}</div>
+                <div className="text-xs select-none chat-header text-black/30">
+                    {feedback.createdBy.name}
+                </div>
                 <div
-                    className={`chat-bubble ${
+                    className={`chat-bubble text-xs ${
                         user?._id === feedback.createdBy._id
                             ? "chat-bubble-info"
                             : "chat-bubble-accent"
@@ -45,7 +45,7 @@ const ChatBubble: React.FC<FeedbackBubbleProps> = ({ feedback }) => {
                     {feedback.content}
                 </div>
                 <div className="chat-footer">
-                    <time className="text-xs opacity-50">
+                    <time className="text-xs select-none opacity-30">
                         {moment(feedback.createdAt).fromNow()}
                     </time>
                 </div>

@@ -25,7 +25,6 @@ const Chat: React.FC<ChatProps> = ({ documentId }) => {
         SOCKET.emit("joinDocument", { documentId });
 
         SOCKET.on("messageReceived", async (data: FeedbackInterface) => {
-            console.log(data);
             if (data._id === documentId) {
                 await refetch();
                 setTimeout(() => {

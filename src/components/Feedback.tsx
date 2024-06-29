@@ -29,7 +29,6 @@ const Feedback: React.FC<FeedbackProps> = ({ documentId }) => {
         SOCKET.emit("joinDocument", { documentId });
 
         SOCKET.on("feedbackReceived", async (data: FeedbackInterface) => {
-            console.log(data);
             if (data._id === documentId) {
                 await refetch();
                 setTimeout(() => {
