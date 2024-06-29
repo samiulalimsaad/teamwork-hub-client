@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 import { ChatInterface } from "../../interfaces/Chat.interface";
 import {
     addChat,
@@ -38,7 +37,6 @@ export const useAddChat = () => {
         mutationFn: addChat,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["Chats"] });
-            toast.success("Chat added successfully!");
         },
     });
 };

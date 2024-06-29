@@ -13,7 +13,7 @@ const Project: React.FC = () => {
     return (
         <fieldset className="h-[calc(100vh-4rem)] p-4">
             <div className="grid h-full grid-cols-1 sm:gap-4 sm:grid-cols-12">
-                <div className="h-full col-span-8">
+                <div className="col-span-8">
                     <DocumentEditor documentId={documentId!} />
                 </div>
                 <div className="col-span-4 border">

@@ -102,12 +102,12 @@ const DocumentEditor: React.FC<DocumentEditorProps> = ({ documentId }) => {
                 onChange={handleTitleChange}
                 placeholder="Document title"
                 required
-                className="w-full input input-bordered"
+                className="w-full input input-bordered bg-accent/20"
             />
             <ReactQuill
                 value={content}
                 onChange={handleChange}
-                className="w-full h-[calc(90vh-4rem)] textarea textarea-bordered overflow-y-scroll"
+                className="w-full h-[85vh] p-0 textarea textarea-bordered pb-11"
             />
         </div>
     );
