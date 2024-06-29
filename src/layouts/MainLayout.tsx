@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useAuth } from "../providers/hooks/auth";
-import { useModalStore } from "../store";
+import { useModalStore } from "../store/modal";
 import { Modal } from "../utils/ui/Modal";
 
 const MainLayout = () => {
