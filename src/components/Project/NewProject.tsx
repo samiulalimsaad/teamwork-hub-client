@@ -1,6 +1,6 @@
 import { FC, FormEvent, useState } from "react";
-import { useCreateProject } from "../services/hooks/project";
-import Error from "../utils/ui/Error";
+import { useCreateProject } from "../../services/hooks/project";
+import Error from "../../utils/ui/Error";
 
 interface NewProjectProps {
     close: () => void;
