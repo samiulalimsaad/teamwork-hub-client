@@ -47,7 +47,7 @@ const Projects: React.FC = () => {
                 <ul className="w-3/5 p-4 mx-auto my-8 space-y-8 border card rounded-box border-accent/10">
                     {projects?.data?.map((project) => (
                         <li key={project._id}>
-                            <a className="mx-auto">
+                            <div className="mx-auto ">
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between">
                                         {project.title}{" "}
@@ -60,7 +60,7 @@ const Projects: React.FC = () => {
                                     </div>
                                 </div>
                                 <div className="divider before:bg-accent/20 after:bg-accent/20"></div>
-                            </a>
+                            </div>
                         </li>
                     ))}
                 </ul>
