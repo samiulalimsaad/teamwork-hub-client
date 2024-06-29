@@ -49,6 +49,7 @@ export const useUpdateProject = () => {
         onSuccess: (_, { id }) => {
             queryClient.invalidateQueries({ queryKey: ["projects"] });
             queryClient.invalidateQueries({ queryKey: ["project", id] });
+            toast.success("Project updated successfully!");
         },
     });
 };
@@ -60,6 +61,7 @@ export const useDeleteProject = () => {
         mutationFn: (id: string) => deleteProject(id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["projects"] });
+            toast.success("Project deleted successfully!");
         },
     });
 };
