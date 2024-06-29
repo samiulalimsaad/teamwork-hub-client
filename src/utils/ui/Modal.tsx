@@ -1,15 +1,13 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { FC, ReactNode } from "react";
-import { useModalStore } from "../../store";
 
 interface ModalProps {
     title: string;
+    isOpen: boolean;
     children: ReactNode;
 }
 
-export const Modal: FC<ModalProps> = ({ title, children }) => {
-    const { isOpen } = useModalStore();
-
+export const Modal: FC<ModalProps> = ({ title, isOpen, children }) => {
     return (
         <>
             <Dialog

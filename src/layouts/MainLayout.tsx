@@ -29,7 +29,7 @@ const MainLayout = () => {
                     <Outlet />
                 )}
             </div>
-            <Modal title="Session Expired">
+            <Modal title="Session Expired" isOpen={isOpen}>
                 <div>redirecting to login page...</div>
             </Modal>
         </div>
