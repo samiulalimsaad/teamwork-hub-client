@@ -1,9 +1,14 @@
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../providers/hooks/auth";
 
 const Login = () => {
-    const { signIn } = useAuth() || {};
+    const { user, loading, signIn } = useAuth() || {};
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!loading && user) navigate("/");
+    }, [loading, navigate, user]);
 
     function handleLogin(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();

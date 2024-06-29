@@ -1,9 +1,13 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../providers/hooks/auth";
 
 const Register = () => {
-    const { createUserWithEmailAndPassword } = useAuth() || {};
-
+    const { user, loading, createUserWithEmailAndPassword } = useAuth() || {};
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (!loading && user) navigate("/");
+    }, [loading, navigate, user]);
     function handleRegister(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const form = e.currentTarget;
@@ -63,7 +67,7 @@ const Register = () => {
                                 </div>
                                 <div className="mt-6 form-control">
                                     <button className="btn btn-accent">
-                                        Login
+                                        Register
                                     </button>
                                 </div>
                             </form>
