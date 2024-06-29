@@ -10,7 +10,6 @@ import {
 import { SOCKET } from "../utils/SOCKET";
 
 interface DocumentEditorProps {
-    projectId: string;
     documentId: string;
 }
 

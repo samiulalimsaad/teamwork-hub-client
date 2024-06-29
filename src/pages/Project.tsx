@@ -7,7 +7,6 @@ import Feedback from "../components/Feedback";
 const tabs = ["Feedbacks", "Discussion"] as const;
 
 const Project: React.FC = () => {
-    const { id } = useParams();
     const { id: documentId } = useParams();
     const [tab, setTab] = useState<string>(tabs[0]);
 
@@ -15,7 +14,7 @@ const Project: React.FC = () => {
         <fieldset className="h-[calc(100vh-4rem)] p-4">
             <div className="grid h-full grid-cols-1 sm:gap-4 sm:grid-cols-12">
                 <div className="h-full col-span-8">
-                    <DocumentEditor projectId={id!} documentId={documentId!} />
+                    <DocumentEditor documentId={documentId!} />
                 </div>
                 <div className="col-span-4 border">
                     <div role="tablist" className="tabs tabs-boxed">
@@ -33,13 +32,9 @@ const Project: React.FC = () => {
                     </div>
                     <div>
                         {tab === tabs[0] && (
-                            <Feedback
-                                projectId={id!}
-                                documentId={documentId!}
-                                userId="userId"
-                            />
+                            <Feedback documentId={documentId!} />
                         )}
-                        {tab === tabs[1] && <Chat />}
+                        {tab === tabs[1] && <Chat documentId={documentId!} />}
                     </div>
                 </div>
             </div>

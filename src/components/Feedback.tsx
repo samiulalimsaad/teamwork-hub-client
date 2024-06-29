@@ -9,9 +9,7 @@ import Error from "../utils/ui/Error";
 import FeedbackBubble from "./FeedbackBubble";
 
 interface FeedbackProps {
-    projectId: string;
     documentId: string;
-    userId: string;
 }
 
 const Feedback: React.FC<FeedbackProps> = ({ documentId }) => {
