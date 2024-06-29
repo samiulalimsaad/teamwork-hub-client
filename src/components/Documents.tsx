@@ -26,7 +26,7 @@ const Documents: React.FC = () => {
     return (
         <div>
             <div className="flex items-center justify-between mt-8">
-                <h3 className="text-xl text-center ">Projects</h3>
+                <h3 className="text-xl text-center ">Documents</h3>
                 <button
                     className="btn btn-accent btn-xs"
                     // onClick={handleCreateDocument}

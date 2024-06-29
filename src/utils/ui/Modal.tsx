@@ -16,7 +16,7 @@ export const Modal: FC<ModalProps> = ({ title, isOpen, children }) => {
                 className="relative z-10 focus:outline-none "
                 onClose={() => {}}
             >
-                <div className="fixed inset-0 z-10 w-screen overflow-y-auto backdrop-blur-sm">
+                <div className="fixed inset-0 z-10 w-screen overflow-y-auto backdrop-blur-lg">
                     <div className="flex items-center justify-center min-h-full p-4 ">
                         <DialogPanel
                             transition
