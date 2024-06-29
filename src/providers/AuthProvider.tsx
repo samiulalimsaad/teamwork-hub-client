@@ -7,7 +7,8 @@ import {
     useLogOutUser,
     useUpdateUser,
 } from "../services/hooks/user";
-import { useModalStore } from "../store";
+import { useModalStore } from "../store/modal";
+import { useUserStore } from "../store/user";
 
 interface AuthProviderProps {
     children: ReactNode;
@@ -33,10 +34,10 @@ export const AuthContext = createContext<AuthInfo | null>(null);
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const { data: me } = useCurrentUser();
-    const [user, setUser] = useState<UserInterface | null>(null);
+
+    const { user, setUser, reset } = useUserStore();
     const [loading, setLoading] = useState(true);
     const { open, close } = useModalStore();
-
     const createUserMutation = useCreateUser();
     const signInMutation = useLogInUser();
     const logOutMutation = useLogOutUser();
@@ -48,7 +49,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             setLoading(false);
             close();
         }
-    }, [close, me?.data]);
+    }, [close, me?.data, setUser]);
 
     const createUserWithEmailAndPassword = async (
         name: string,
@@ -83,7 +84,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const logOut = async () => {
         setLoading(true);
         await logOutMutation.mutateAsync();
-        setUser(null);
+        reset();
         setLoading(false);
         open();
     };
