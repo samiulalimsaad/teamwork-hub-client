@@ -3,19 +3,23 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../providers/hooks/auth";
 
 const Register = () => {
-    const { user, loading, createUserWithEmailAndPassword } = useAuth() || {};
+    const { user, loading, createUserWithEmailAndPassword, signIn } =
+        useAuth() || {};
     const navigate = useNavigate();
+
     useEffect(() => {
         if (!loading && user) navigate("/");
     }, [loading, navigate, user]);
-    function handleRegister(e: React.FormEvent<HTMLFormElement>) {
+
+    async function handleRegister(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const form = e.currentTarget;
         const name = form.username.value;
         const email = form.email.value;
         const password = form.password.value;
 
-        createUserWithEmailAndPassword(name, email, password);
+        await createUserWithEmailAndPassword(name, email, password);
+        await signIn(email, password);
     }
 
     return (

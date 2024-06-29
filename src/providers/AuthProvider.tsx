@@ -63,7 +63,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             password,
         };
         const { data } = await createUserMutation.mutateAsync(newUser);
-        setUser(data);
         setLoading(false);
         return data;
     };
