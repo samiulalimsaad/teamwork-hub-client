@@ -1,17 +1,21 @@
 import React, { FormEvent, useEffect, useRef, useState } from "react";
-import { FeedbackInterface } from "../interfaces/Feedback.interface";
-import { useAddChat, useFetchChatByDocumentId } from "../services/hooks/chat";
-import { SOCKET } from "../utils/SOCKET";
-import Error from "../utils/ui/Error";
-import ChatBubble from "./ChatBubble";
+import { FeedbackInterface } from "../../interfaces/Feedback.interface";
+import {
+    useAddFeedback,
+    useFetchFeedbackByDocumentId,
+} from "../../services/hooks/feedback";
+import { SOCKET } from "../../utils/SOCKET";
+import Error from "../../utils/ui/Error";
+import FeedbackBubble from "./FeedbackBubble";
 
-interface ChatProps {
+interface FeedbackProps {
     documentId: string;
 }
 
-const Chat: React.FC<ChatProps> = ({ documentId }) => {
-    const { data: chats, refetch } = useFetchChatByDocumentId(documentId);
-    const addFeedback = useAddChat();
+const Feedback: React.FC<FeedbackProps> = ({ documentId }) => {
+    const { data: feedback, refetch } =
+        useFetchFeedbackByDocumentId(documentId);
+    const addFeedback = useAddFeedback();
     const [error, setError] = useState("");
     const ref = useRef<HTMLLIElement | null>(null);
 
@@ -24,7 +28,7 @@ const Chat: React.FC<ChatProps> = ({ documentId }) => {
     useEffect(() => {
         SOCKET.emit("joinDocument", { documentId });
 
-        SOCKET.on("messageReceived", async (data: FeedbackInterface) => {
+        SOCKET.on("feedbackReceived", async (data: FeedbackInterface) => {
             if (data._id === documentId) {
                 await refetch();
                 setTimeout(() => {
@@ -35,7 +39,7 @@ const Chat: React.FC<ChatProps> = ({ documentId }) => {
 
         return () => {
             SOCKET.emit("leaveDocument", { documentId });
-            SOCKET.off("messageReceived");
+            SOCKET.off("feedbackReceived");
         };
     }, [documentId, refetch]);
 
@@ -43,14 +47,14 @@ const Chat: React.FC<ChatProps> = ({ documentId }) => {
         e.preventDefault();
         const form = e.currentTarget;
         const feedbackData = {
-            content: form.message.value,
+            content: form.feedback.value,
             document: documentId,
         };
         if (!feedbackData.content) return setError("Feedback is required");
 
         addFeedback.mutate(feedbackData);
         setTimeout(() => {
-            SOCKET.emit("newMessage", { ...feedbackData, _id: documentId });
+            SOCKET.emit("newFeedback", { ...feedbackData, _id: documentId });
             form.reset();
             ref.current?.scrollIntoView({ behavior: "smooth" });
         }, 1500);
@@ -59,24 +63,24 @@ const Chat: React.FC<ChatProps> = ({ documentId }) => {
     return (
         <div className="relative h-full">
             <ul className="p-2 overflow-y-scroll h-[calc(80vh-5rem)]">
-                {chats?.data?.map((fb) => (
+                {feedback?.data?.map((fb) => (
                     <li key={fb._id}>
-                        <ChatBubble feedback={fb} />
+                        <FeedbackBubble feedback={fb} />
                     </li>
                 ))}
-                <li ref={ref}></li>
+                <li key={crypto.randomUUID()} ref={ref}></li>
             </ul>
             <div className="mt-auto bg-white">
                 {error && <Error error={error} />}
                 <form onSubmit={handleSubmit}>
                     <textarea
-                        name="message"
-                        placeholder="write a message..."
+                        name="feedback"
+                        placeholder="Leave your feedback"
                         className="w-full textarea textarea-bordered"
                         required
                     />
                     <button className="w-full btn btn-accent" type="submit">
-                        Send
+                        Submit
                     </button>
                 </form>
             </div>
@@ -84,4 +88,4 @@ const Chat: React.FC<ChatProps> = ({ documentId }) => {
     );
 };
 
-export default Chat;
+export default Feedback;

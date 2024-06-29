@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Chat from "../components/Chat";
-import DocumentEditor from "../components/DocumentEditor";
+import DocumentEditor from "../components/Document/DocumentEditor";
 import Feedback from "../components/Feedback";
 
 const tabs = ["Feedbacks", "Discussion"] as const;

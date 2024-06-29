@@ -1,17 +1,23 @@
 import moment from "moment";
-import { FeedbackInterface } from "../interfaces/Feedback.interface";
-import { useAuth } from "../providers/hooks/auth";
+import { FeedbackInterface } from "../../interfaces/Feedback.interface";
+import { useAuth } from "../../providers/hooks/auth";
 
 interface FeedbackBubbleProps {
     feedback: FeedbackInterface;
 }
 
-const FeedbackBubble: React.FC<FeedbackBubbleProps> = ({ feedback }) => {
+const ChatBubble: React.FC<FeedbackBubbleProps> = ({ feedback }) => {
     const { user } = useAuth();
 
     return (
         <div>
-            <div className="chat chat-start">
+            <div
+                className={`chat ${
+                    user?._id === feedback.createdBy._id
+                        ? "chat-end"
+                        : "chat-start"
+                }`}
+            >
                 <div className="chat-image avatar placeholder">
                     <div
                         className={`w-10 !rounded-full shadow-md ${
@@ -26,7 +32,7 @@ const FeedbackBubble: React.FC<FeedbackBubbleProps> = ({ feedback }) => {
                     </div>
                 </div>
 
-                <div className="text-xs select-none chat-header opacity-30">
+                <div className="text-xs select-none chat-header text-black/30">
                     {feedback.createdBy.name}
                 </div>
                 <div
@@ -48,4 +54,4 @@ const FeedbackBubble: React.FC<FeedbackBubbleProps> = ({ feedback }) => {
     );
 };
 
-export default FeedbackBubble;
+export default ChatBubble;

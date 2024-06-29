@@ -1,13 +1,13 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import useDebounce from "../hooks/useDebounce";
-import { DocumentInterface } from "../interfaces/Document.interface";
+import useDebounce from "../../hooks/useDebounce";
+import { DocumentInterface } from "../../interfaces/Document.interface";
 import {
     useFetchDocumentById,
     useUpdateDocument,
-} from "../services/hooks/document";
-import { SOCKET } from "../utils/SOCKET";
+} from "../../services/hooks/document";
+import { SOCKET } from "../../utils/SOCKET";
 
 interface DocumentEditorProps {
     documentId: string;

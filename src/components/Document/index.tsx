@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import { DocumentInterface } from "../interfaces/Document.interface";
+import { DocumentInterface } from "../../interfaces/Document.interface";
 
 interface DocumentProps {
     document: DocumentInterface;
