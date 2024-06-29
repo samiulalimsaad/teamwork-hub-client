@@ -31,7 +31,10 @@ const NewProject: FC<NewProjectProps> = ({ close }) => {
     return (
         <div>
             {error && (
-                <div role="alert" className="alert alert-warning">
+                <div
+                    role="alert"
+                    className="w-3/5 mx-auto my-8 alert alert-warning"
+                >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="w-6 h-6 stroke-current shrink-0"
