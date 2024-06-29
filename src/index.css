@@ -6,4 +6,15 @@
     * {
         @apply !rounded-none;
     }
+    .highlight-yellow {
+        background-color: yellow;
+    }
+
+    .highlight-blue {
+        background-color: lightblue;
+    }
+
+    .highlight-green {
+        background-color: lightgreen;
+    }
 }

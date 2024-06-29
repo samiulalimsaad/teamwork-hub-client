@@ -9,12 +9,14 @@ import AuthProvider from "./providers/AuthProvider.tsx";
 import { router } from "./routes/index.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-    <React.StrictMode>
-        <QueryClientProvider client={new QueryClient()}>
-            <AuthProvider>
-                <RouterProvider router={router} />
-            </AuthProvider>
-        </QueryClientProvider>
-        <ToastContainer />
-    </React.StrictMode>
+    <>
+        <React.StrictMode>
+            <QueryClientProvider client={new QueryClient()}>
+                <AuthProvider>
+                    <RouterProvider router={router} />
+                </AuthProvider>
+            </QueryClientProvider>
+            <ToastContainer />
+        </React.StrictMode>
+    </>
 );
