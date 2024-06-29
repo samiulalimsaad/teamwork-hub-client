@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { FeedbackInterface } from "../interfaces/Feedback.interface";
 import {
     useAddFeedback,
@@ -17,13 +17,24 @@ const Feedback: React.FC<FeedbackProps> = ({ documentId }) => {
         useFetchFeedbackByDocumentId(documentId);
     const addFeedback = useAddFeedback();
     const [error, setError] = useState("");
+    const ref = useRef<HTMLLIElement | null>(null);
+
+    useEffect(() => {
+        setTimeout(() => {
+            ref.current?.scrollIntoView({ behavior: "smooth" });
+        }, 1500);
+    }, []);
+
     useEffect(() => {
         SOCKET.emit("joinDocument", { documentId });
 
-        SOCKET.on("feedbackReceived", (data: FeedbackInterface) => {
+        SOCKET.on("feedbackReceived", async (data: FeedbackInterface) => {
             console.log(data);
             if (data._id === documentId) {
-                refetch();
+                await refetch();
+                setTimeout(() => {
+                    ref.current?.scrollIntoView({ behavior: "smooth" });
+                }, 500);
             }
         });
 
@@ -46,19 +57,21 @@ const Feedback: React.FC<FeedbackProps> = ({ documentId }) => {
         setTimeout(() => {
             SOCKET.emit("newFeedback", { ...feedbackData, _id: documentId });
             form.reset();
+            ref.current?.scrollIntoView({ behavior: "smooth" });
         }, 1500);
     };
 
     return (
         <div className="relative h-full">
-            <ul className="p-2 overflow-y-scroll h-[calc(80vh-4rem)]">
+            <ul className="p-2 overflow-y-scroll h-[calc(80vh-5rem)]">
                 {feedback?.data?.map((fb) => (
                     <li key={fb._id}>
                         <FeedbackBubble feedback={fb} />
                     </li>
                 ))}
+                <li key={crypto.randomUUID()} ref={ref}></li>
             </ul>
-            <div className="absolute bottom-0 bg-white">
+            <div className="mt-auto bg-white">
                 {error && <Error error={error} />}
                 <form onSubmit={handleSubmit}>
                     <textarea
