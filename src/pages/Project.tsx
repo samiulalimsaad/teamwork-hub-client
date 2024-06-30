@@ -8,7 +8,7 @@ const tabs = ["Feedbacks", "Discussion"] as const;
 
 const Project: React.FC = () => {
     const { id: documentId } = useParams();
-    const [tab, setTab] = useState<string>(tabs[0]);
+    const [tab, setTab] = useState<string>(tabs[1]);
 
     return (
         <fieldset className="h-[calc(100vh-4rem)] p-4">
