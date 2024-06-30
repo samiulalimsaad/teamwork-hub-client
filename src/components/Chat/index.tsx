@@ -1,5 +1,6 @@
 import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { FeedbackInterface } from "../../interfaces/Feedback.interface";
+import { UserInterface } from "../../interfaces/User.interface";
 import {
     useAddChat,
     useFetchChatByDocumentId,
@@ -15,7 +16,10 @@ interface ChatProps {
 const Chat: React.FC<ChatProps> = ({ documentId }) => {
     const { data: chats, refetch } = useFetchChatByDocumentId(documentId);
     const addFeedback = useAddChat();
+
     const [error, setError] = useState("");
+    const [newParticipant, setNewParticipant] = useState<UserInterface>();
+
     const ref = useRef<HTMLLIElement | null>(null);
 
     useEffect(() => {
@@ -25,8 +29,11 @@ const Chat: React.FC<ChatProps> = ({ documentId }) => {
     }, []);
 
     useEffect(() => {
-        SOCKET.emit("joinDocument", { documentId });
+        SOCKET.on(`document-${documentId}`, (data: { user: UserInterface }) => {
+            console.log({ data });
 
+            setNewParticipant(data.user);
+        });
         SOCKET.on("messageReceived", async (data: FeedbackInterface) => {
             if (data._id === documentId) {
                 await refetch();
@@ -67,6 +74,12 @@ const Chat: React.FC<ChatProps> = ({ documentId }) => {
                         <ChatBubble feedback={fb} />
                     </li>
                 ))}
+
+                {newParticipant?._id && (
+                    <li className="text-xs text-center opacity-25 select-none">
+                        {newParticipant.name} joined the discussion
+                    </li>
+                )}
                 <li ref={ref}></li>
             </ul>
             <div className="mt-auto bg-white">
