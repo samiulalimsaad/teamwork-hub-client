@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { VersionInterface } from "../../interfaces/Version.interface";
 import {
@@ -26,14 +25,12 @@ export const useFetchVersionById = (id: string) => {
 
 export const useCreateVersion = () => {
     const queryClient = useQueryClient();
-    const navigate = useNavigate();
 
     return useMutation({
         mutationFn: createVersion,
-        onSuccess: ({ data }) => {
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["Versions"] });
             toast.success("Version added successfully!");
-            navigate(`/project/Version/${data._id}`);
         },
     });
 };

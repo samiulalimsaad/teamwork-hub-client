@@ -1,9 +1,6 @@
 import { CommonInterface } from "./Common.interface";
-import { FeedbackInterface } from "./Feedback.interface";
+import { DocumentInterface } from "./Document.interface";
 
 export interface VersionInterface extends CommonInterface {
-    title: string;
-    content: string;
-    project?: string;
-    feedbacks: FeedbackInterface[];
+    document: DocumentInterface;
 }
