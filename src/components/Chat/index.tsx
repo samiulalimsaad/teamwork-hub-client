@@ -1,5 +1,4 @@
 import React, { FormEvent, useEffect, useRef, useState } from "react";
-import { FeedbackInterface } from "../../interfaces/Feedback.interface";
 import { UserInterface } from "../../interfaces/User.interface";
 import {
     useAddChat,
@@ -34,18 +33,17 @@ const Chat: React.FC<ChatProps> = ({ documentId }) => {
 
             setNewParticipant(data.user);
         });
-        SOCKET.on("messageReceived", async (data: FeedbackInterface) => {
-            if (data._id === documentId) {
-                await refetch();
-                setTimeout(() => {
-                    ref.current?.scrollIntoView({ behavior: "smooth" });
-                }, 500);
-            }
+        SOCKET.on(`messageReceived-${documentId}`, async () => {
+            setNewParticipant(undefined);
+            await refetch();
+
+            setTimeout(() => {
+                ref.current?.scrollIntoView({ behavior: "smooth" });
+            }, 500);
         });
 
         return () => {
-            SOCKET.emit("leaveDocument", { documentId });
-            SOCKET.off("messageReceived");
+            SOCKET.off(`messageReceived-${documentId}`);
         };
     }, [documentId, refetch]);
 

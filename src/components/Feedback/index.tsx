@@ -1,5 +1,4 @@
 import React, { FormEvent, useEffect, useRef, useState } from "react";
-import { FeedbackInterface } from "../../interfaces/Feedback.interface";
 import {
     useAddFeedback,
     useFetchFeedbackByDocumentId,
@@ -26,20 +25,15 @@ const Feedback: React.FC<FeedbackProps> = ({ documentId }) => {
     }, []);
 
     useEffect(() => {
-        SOCKET.emit("joinDocument", { documentId });
-
-        SOCKET.on("feedbackReceived", async (data: FeedbackInterface) => {
-            if (data._id === documentId) {
-                await refetch();
-                setTimeout(() => {
-                    ref.current?.scrollIntoView({ behavior: "smooth" });
-                }, 500);
-            }
+        SOCKET.on(`feedbackReceived-${documentId}`, async () => {
+            await refetch();
+            setTimeout(() => {
+                ref.current?.scrollIntoView({ behavior: "smooth" });
+            }, 500);
         });
 
         return () => {
-            SOCKET.emit("leaveDocument", { documentId });
-            SOCKET.off("feedbackReceived");
+            SOCKET.off(`feedbackReceived-${documentId}`);
         };
     }, [documentId, refetch]);
 
