@@ -63,7 +63,6 @@ export const useDeleteDocument = () => {
         mutationFn: (id: string) => deleteDocument(id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["documents"] });
-            toast.success("Document deleted successfully!");
         },
     });
 };

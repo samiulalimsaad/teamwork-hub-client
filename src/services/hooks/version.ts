@@ -11,14 +11,14 @@ import {
 
 export const useFetchVersions = (projectId: string) => {
     return useQuery({
-        queryKey: ["Versions", projectId],
+        queryKey: ["versions", projectId],
         queryFn: () => fetchVersions(projectId),
     });
 };
 
 export const useFetchVersionById = (id: string) => {
     return useQuery({
-        queryKey: ["Version", id],
+        queryKey: ["version"],
         queryFn: () => fetchVersionById(id),
     });
 };
@@ -29,7 +29,7 @@ export const useCreateVersion = () => {
     return useMutation({
         mutationFn: createVersion,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["Versions"] });
+            queryClient.invalidateQueries({ queryKey: ["versions"] });
             toast.success("Version added successfully!");
         },
     });
@@ -47,8 +47,8 @@ export const useUpdateVersion = () => {
             updatedVersion: Partial<VersionInterface>;
         }) => updateVersion(id, updatedVersion),
         onSuccess: (_, { id }) => {
-            queryClient.invalidateQueries({ queryKey: ["Versions"] });
-            queryClient.invalidateQueries({ queryKey: ["Version", id] });
+            queryClient.invalidateQueries({ queryKey: ["versions"] });
+            queryClient.invalidateQueries({ queryKey: ["version", id] });
         },
     });
 };
@@ -58,9 +58,9 @@ export const useDeleteVersion = () => {
 
     return useMutation({
         mutationFn: (id: string) => deleteVersion(id),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["Versions"] });
-            toast.success("Version deleted successfully!");
+        onSuccess: (_, id) => {
+            queryClient.invalidateQueries({ queryKey: ["version"] });
+            queryClient.invalidateQueries({ queryKey: ["version", id] });
         },
     });
 };
