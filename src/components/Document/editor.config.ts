@@ -1,0 +1,27 @@
+export const editorSupportedLanguage = [
+    "javascript",
+    "typescript",
+    "json",
+    "html",
+    "css",
+    "python",
+    "cpp",
+    "dockerfile",
+    "go",
+    "graphql",
+    "java",
+    "less",
+    "markdown",
+    "mdx",
+    "mysql",
+    "pgsql",
+    "php",
+    "powershell",
+    "rust",
+    "sql",
+    "xml",
+    "yaml",
+    "text",
+];
+
+export const editorTheme = ["light", "vs-dark"];
