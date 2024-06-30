@@ -38,7 +38,7 @@ const Documents: React.FC = () => {
 
             <div>
                 <div className="divider"></div>
-                <ul className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {documents?.data?.map((doc) => (
                         <li key={doc._id}>
                             <Document document={doc} />

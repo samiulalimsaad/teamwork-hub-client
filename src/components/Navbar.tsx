@@ -4,7 +4,7 @@ import { useAuth } from "../providers/hooks/auth";
 const Navbar = () => {
     const { user, logOut } = useAuth();
     return (
-        <div className="w-full mx-auto  navbar sm:w-3/5">
+        <div className="w-full mx-auto navbar sm:w-3/5">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div
@@ -28,7 +28,7 @@ const Navbar = () => {
                         </svg>
                     </div>
                 </div>
-                <Link to="/" className="text-xl btn btn-ghost">
+                <Link to="/" className="text-xl btn btn-ghost drop-shadow-md">
                     TeamworkHub
                 </Link>
             </div>
@@ -40,10 +40,10 @@ const Navbar = () => {
                     </button>
                 ) : (
                     <div className="flex items-center gap-4">
-                        <Link to="/login" className="btn btn-sm">
+                        <Link to="/login" className="btn">
                             Login
                         </Link>
-                        <Link to="/register" className="btn btn-sm">
+                        <Link to="/register" className="btn">
                             Register
                         </Link>
                     </div>

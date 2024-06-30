@@ -22,7 +22,7 @@ const MainLayout = () => {
             <div className="sticky top-0 bg-accent">
                 <Navbar />
             </div>
-            <div className="w-full mx-auto sm:w-3/5">
+            <div className="w-full p-4 mx-auto sm:w-3/5">
                 {loading ? (
                     <span className="loading loading-dots loading-lg"></span>
                 ) : (
