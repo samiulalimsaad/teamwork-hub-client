@@ -12,7 +12,7 @@ API.interceptors.response.use(
             console.error("Unauthorized: Redirecting to login...");
             useModalStore.getState().open();
             useUserStore.getState().reset();
-        } else if (error.response.status === 403) {
+        } else if (error.response?.status === 403) {
             console.error("Forbidden: Access denied.");
             alert("You do not have permission to access this resource.");
         }

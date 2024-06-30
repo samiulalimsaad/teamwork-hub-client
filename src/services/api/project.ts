@@ -11,7 +11,7 @@ export const fetchProjectById = (
 export interface createProjectInterface
     extends Omit<
         ProjectInterface,
-        "_id" | "documents" | "createdAt" | "updatedAt"
+        "_id" | "documents" | "createdAt" | "createdBy" | "updatedAt"
     > {}
 
 export const createProject = (

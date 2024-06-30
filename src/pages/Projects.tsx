@@ -60,24 +60,32 @@ const Projects: React.FC = () => {
                                                 </p>
                                             </div>
                                             <div className="flex items-center gap-4">
-                                                <button
-                                                    className="btn btn-error btn-xs"
-                                                    onClick={() =>
-                                                        deleteProject.mutate(
-                                                            project._id
-                                                        )
-                                                    }
-                                                >
-                                                    Delete
-                                                </button>
-                                                <button
-                                                    className="btn btn-warning btn-xs"
-                                                    onClick={() =>
-                                                        setEditing(project)
-                                                    }
-                                                >
-                                                    Edit
-                                                </button>
+                                                {user?.email ===
+                                                    project.createdBy
+                                                        ?.email && (
+                                                    <button
+                                                        className="btn btn-error btn-xs"
+                                                        onClick={() =>
+                                                            deleteProject.mutate(
+                                                                project._id
+                                                            )
+                                                        }
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                )}
+                                                {user?.email ===
+                                                    project.createdBy
+                                                        ?.email && (
+                                                    <button
+                                                        className="btn btn-warning btn-xs"
+                                                        onClick={() =>
+                                                            setEditing(project)
+                                                        }
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                )}
                                                 <Link
                                                     to={`/project/${project._id}`}
                                                     className="btn btn-accent btn-xs"
