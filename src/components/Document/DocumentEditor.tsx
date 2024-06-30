@@ -22,17 +22,14 @@ const DocumentEditor: React.FC<DocumentEditorProps> = ({ documentId }) => {
     const { data: document } = useFetchDocumentById(documentId);
     const updateDocument = useUpdateDocument();
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const [quill, setQuill] = useState<Quill | null>(null);
     const editorRef = useRef<ReactQuill>(null);
     const [title, setTitle] = useState<string>(document?.data?.title || "");
     const [content, setContent] = useState<string>(
         document?.data?.content || ""
     );
 
-    const updateTitle = useDebounce(updateTitleCB, 1500, [title]);
-    const updateContent = useDebounce(updateContentCB, 1500, [content]);
+    const updateTitle = useDebounce(updateTitleCB, 1000, [title]);
+    const updateContent = useDebounce(updateContentCB, 1000, [content]);
 
     useEffect(() => {
         if (document?.data) {
@@ -56,32 +53,25 @@ const DocumentEditor: React.FC<DocumentEditorProps> = ({ documentId }) => {
     }
 
     useEffect(() => {
-        if (editorRef.current) {
-            const quillInstance = editorRef.current.getEditor();
-            setQuill(quillInstance);
-        }
-    }, []);
-
-    useEffect(() => {
-        SOCKET.emit("joinDocument", { documentId, user });
+        SOCKET.emit(`joinDocument`, {
+            documentId,
+            user,
+        });
 
         let timeout: NodeJS.Timeout | null = null;
-        SOCKET.on("documentEdited", (data: DocumentInterface) => {
-            if (data._id === documentId) {
-                if (timeout) clearTimeout(timeout);
-                timeout = setTimeout(() => {
-                    setContent(data.content);
-                    setTitle(data.title);
-                }, 500);
-            }
+        SOCKET.on(`documentEdited-${documentId}`, (data: DocumentInterface) => {
+            if (timeout) clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                setContent(data.content);
+                setTitle(data.title);
+            }, 50);
         });
 
         return () => {
             SOCKET.emit("leaveDocument", { documentId });
-            SOCKET.off("documentEdited");
-            SOCKET.off("cursor-move");
+            SOCKET.off(`documentEdited-${documentId}`);
         };
-    }, [content.length, documentId, quill, user]);
+    }, [documentId, user]);
 
     const handleChange = (value: string) => {
         setContent(value);
