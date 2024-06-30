@@ -10,6 +10,7 @@ import {
 } from "../../services/hooks/document";
 import { Highlight } from "../../utils/CustomQuill";
 import { SOCKET } from "../../utils/SOCKET";
+import { MyEditor } from "./MyEditor";
 
 Quill.register(Highlight);
 
@@ -111,12 +112,11 @@ const DocumentEditor: React.FC<DocumentEditorProps> = ({ documentId }) => {
                 required
                 className="w-full input input-bordered bg-accent/20"
             />
-            <ReactQuill
-                ref={editorRef}
+            <MyEditor
+                // ref={editorRef}
                 value={content}
-                onChange={handleChange}
+                handleChange={handleChange}
                 className="w-full h-[85vh] p-0 textarea textarea-bordered pb-11"
-                modules={{}}
             />
         </div>
     );
