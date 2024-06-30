@@ -1,5 +1,5 @@
+import { CommonInterface } from "./Common.interface";
 import { UserInterface } from "./User.interface";
-import { CommonInterface } from "./common.interface";
 
 export interface FeedbackInterface extends CommonInterface {
     content: string;

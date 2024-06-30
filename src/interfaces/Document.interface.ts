@@ -1,5 +1,5 @@
+import { CommonInterface } from "./Common.interface";
 import { FeedbackInterface } from "./Feedback.interface";
-import { CommonInterface } from "./common.interface";
 
 export interface DocumentInterface extends CommonInterface {
     title: string;
