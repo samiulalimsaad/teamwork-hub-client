@@ -10,7 +10,7 @@ import {
 } from "../../services/hooks/document";
 import { Highlight } from "../../utils/CustomQuill";
 import { SOCKET } from "../../utils/SOCKET";
-import { MyEditor } from "./MyEditor";
+import { MyEditor } from "../Editor/MyEditor";
 
 Quill.register(Highlight);
 
