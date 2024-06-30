@@ -8,14 +8,13 @@ interface MyEditorProps {
 }
 
 export const MyEditor: React.FC<MyEditorProps> = ({ value, handleChange }) => {
-    // const [content, setContent] = useState<string>();
     const [language, setLanguage] = useState("javascript");
     const [theme, setTheme] = useState("light");
     return (
         <div>
             <div>
                 <select
-                    className="capitalize  select select-bordered"
+                    className="capitalize select select-bordered"
                     onChange={(e) => setLanguage(e.target.value)}
                 >
                     {editorSupportedLanguage.map((l) => (
@@ -25,7 +24,7 @@ export const MyEditor: React.FC<MyEditorProps> = ({ value, handleChange }) => {
                     ))}
                 </select>
                 <select
-                    className="capitalize  select select-bordered"
+                    className="capitalize select select-bordered"
                     onChange={(e) => setTheme(e.target.value)}
                 >
                     {editorTheme.map((l) => (
@@ -42,7 +41,7 @@ export const MyEditor: React.FC<MyEditorProps> = ({ value, handleChange }) => {
                 defaultValue="// some comment"
                 value={value}
                 onChange={handleChange}
-                className="w-full h-[85vh] p-0 textarea textarea-bordered pb-11"
+                className="w-full h-[75vh] p-0 textarea textarea-bordered pb-11"
             />
         </div>
     );

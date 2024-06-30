@@ -56,7 +56,7 @@ const Feedback: React.FC<FeedbackProps> = ({ documentId }) => {
 
     return (
         <div className="relative h-full">
-            <ul className="p-2 overflow-y-scroll h-[calc(80vh-5rem)]">
+            <ul className="p-2 overflow-y-scroll h-[70vh]">
                 {feedback?.data?.map((fb) => (
                     <li key={fb._id}>
                         <FeedbackBubble feedback={fb} />

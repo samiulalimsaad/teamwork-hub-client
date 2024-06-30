@@ -11,12 +11,12 @@ const Project: React.FC = () => {
     const [tab, setTab] = useState<string>(tabs[1]);
 
     return (
-        <fieldset className="h-[calc(100vh-4rem)] p-4">
-            <div className="grid h-full grid-cols-1 sm:gap-4 sm:grid-cols-12">
+        <fieldset className="h-[70vh] p-4">
+            <div className="grid h-full grid-cols-1 lg:gap-4 lg:grid-cols-12">
                 <div className="col-span-8">
                     <DocumentEditor documentId={documentId!} />
                 </div>
-                <div className="col-span-4 border">
+                <div className="col-span-4 mt-4 border lg:mt-0">
                     <div role="tablist" className="tabs tabs-boxed">
                         {tabs.map((t) => (
                             <button
