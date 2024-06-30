@@ -8,7 +8,7 @@ export const fetchVersions = (
 
 export const fetchVersionById = (
     id: string
-): Promise<{ data: VersionInterface }> => API.get(`/versions/${id}`);
+): Promise<{ data: VersionInterface[] }> => API.get(`/versions/${id}`);
 
 export interface createVersionInterface
     extends Omit<
