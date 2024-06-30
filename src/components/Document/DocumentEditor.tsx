@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-import ReactQuill, { Quill } from "react-quill";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import useDebounce from "../../hooks/useDebounce";
 import { DocumentInterface } from "../../interfaces/Document.interface";
@@ -23,7 +23,6 @@ const DocumentEditor: React.FC<DocumentEditorProps> = ({ documentId }) => {
     const { data: document } = useFetchDocumentById(documentId);
     const updateDocument = useUpdateDocument();
 
-    const editorRef = useRef<ReactQuill>(null);
     const [title, setTitle] = useState<string>(document?.data?.title || "");
     const [content, setContent] = useState<string>(
         document?.data?.content || ""
@@ -74,8 +73,8 @@ const DocumentEditor: React.FC<DocumentEditorProps> = ({ documentId }) => {
         };
     }, [documentId, user]);
 
-    const handleChange = (value: string) => {
-        setContent(value);
+    const handleChange = (value: string | undefined) => {
+        setContent(value || "");
         const updatedDocument = {
             title,
             content: value,
@@ -112,12 +111,7 @@ const DocumentEditor: React.FC<DocumentEditorProps> = ({ documentId }) => {
                 required
                 className="w-full input input-bordered bg-accent/20"
             />
-            <MyEditor
-                // ref={editorRef}
-                value={content}
-                handleChange={handleChange}
-                className="w-full h-[85vh] p-0 textarea textarea-bordered pb-11"
-            />
+            <MyEditor value={content} handleChange={handleChange} />
         </div>
     );
 };

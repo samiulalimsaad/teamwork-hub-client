@@ -3,9 +3,8 @@ import React, { useState } from "react";
 import { editorSupportedLanguage, editorTheme } from "./editor.config";
 
 interface MyEditorProps {
-    props: object;
     value: string;
-    handleChange: (v: string) => void;
+    handleChange: (v: string | undefined) => void;
 }
 
 export const MyEditor: React.FC<MyEditorProps> = ({ value, handleChange }) => {
@@ -16,7 +15,7 @@ export const MyEditor: React.FC<MyEditorProps> = ({ value, handleChange }) => {
         <div>
             <div>
                 <select
-                    className="capitalize"
+                    className="capitalize  select select-bordered"
                     onChange={(e) => setLanguage(e.target.value)}
                 >
                     {editorSupportedLanguage.map((l) => (
@@ -26,7 +25,7 @@ export const MyEditor: React.FC<MyEditorProps> = ({ value, handleChange }) => {
                     ))}
                 </select>
                 <select
-                    className="capitalize"
+                    className="capitalize  select select-bordered"
                     onChange={(e) => setTheme(e.target.value)}
                 >
                     {editorTheme.map((l) => (
@@ -37,14 +36,13 @@ export const MyEditor: React.FC<MyEditorProps> = ({ value, handleChange }) => {
                 </select>
             </div>
             <Editor
-                height="80vh"
                 defaultLanguage="javascript"
                 language={language}
                 theme={theme}
                 defaultValue="// some comment"
                 value={value}
                 onChange={handleChange}
-                className="border"
+                className="w-full h-[85vh] p-0 textarea textarea-bordered pb-11"
             />
         </div>
     );
