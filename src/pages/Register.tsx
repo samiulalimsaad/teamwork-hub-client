@@ -1,11 +1,15 @@
-import { useEffect } from "react";
+import { AxiosError } from "axios";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../providers/hooks/auth";
+import Error from "../utils/ui/Error";
 
 const Register = () => {
     const { user, loading, createUserWithEmailAndPassword, signIn } =
         useAuth() || {};
     const navigate = useNavigate();
+
+    const [error, setError] = useState("");
 
     useEffect(() => {
         if (!loading && user) navigate("/");
@@ -13,13 +17,24 @@ const Register = () => {
 
     async function handleRegister(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        setError("");
         const form = e.currentTarget;
         const name = form.username.value;
         const email = form.email.value;
         const password = form.password.value;
 
-        await createUserWithEmailAndPassword(name, email, password);
-        await signIn(email, password);
+        try {
+            await createUserWithEmailAndPassword(name, email, password);
+            await signIn(email, password);
+            form.reset();
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                const err = error.response?.data.error;
+                if (err.includes("duplicate key")) {
+                    setError("Email already used");
+                }
+            }
+        }
     }
 
     return (
@@ -27,6 +42,7 @@ const Register = () => {
             <div className="min-h-screen hero bg-base-200">
                 <div className="flex-col hero-content lg:flex-row-reverse">
                     <div className="w-full max-w-sm shadow-2xl card bg-base-100 shrink-0">
+                        {error && <Error error={error} />}
                         <div className="card-body">
                             <form onSubmit={handleRegister}>
                                 <div className="form-control">

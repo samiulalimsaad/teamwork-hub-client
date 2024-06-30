@@ -1,24 +1,35 @@
-import React, { useEffect } from "react";
+import { AxiosError } from "axios";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../providers/hooks/auth";
+import Error from "../utils/ui/Error";
 
 const Login = () => {
     const { user, loading, signIn } = useAuth() || {};
     const navigate = useNavigate();
-
+    const [error, setError] = useState("");
     useEffect(() => {
         if (!loading && user) navigate("/");
     }, [loading, navigate, user]);
 
-    function handleLogin(e: React.FormEvent<HTMLFormElement>) {
+    async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        setError("");
         const form = e.currentTarget;
         const email = form.email.value;
         const password = form.password.value;
 
-        signIn(email, password).then(() => {
+        try {
+            await signIn(email, password);
+            form.reset();
             navigate("/");
-        });
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                const err = error.response?.data.error;
+                console.log(err);
+                setError(err);
+            }
+        }
     }
 
     return (
@@ -26,6 +37,7 @@ const Login = () => {
             <div className="min-h-screen hero bg-base-200">
                 <div className="flex-col hero-content lg:flex-row-reverse">
                     <div className="w-full max-w-sm shadow-2xl card bg-base-100 shrink-0">
+                        {error && <Error error={error} />}
                         <div className="card-body">
                             <form onSubmit={handleLogin}>
                                 <div className="form-control">
