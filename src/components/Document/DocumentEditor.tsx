@@ -1,8 +1,9 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-import ReactQuill, { Quill, Range } from "react-quill";
+import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import useDebounce from "../../hooks/useDebounce";
 import { DocumentInterface } from "../../interfaces/Document.interface";
+import { useAuth } from "../../providers/hooks/auth";
 import {
     useFetchDocumentById,
     useUpdateDocument,
@@ -17,6 +18,7 @@ interface DocumentEditorProps {
 }
 
 const DocumentEditor: React.FC<DocumentEditorProps> = ({ documentId }) => {
+    const { user } = useAuth();
     const { data: document } = useFetchDocumentById(documentId);
     const updateDocument = useUpdateDocument();
 
@@ -61,7 +63,7 @@ const DocumentEditor: React.FC<DocumentEditorProps> = ({ documentId }) => {
     }, []);
 
     useEffect(() => {
-        SOCKET.emit("joinDocument", { documentId });
+        SOCKET.emit("joinDocument", { documentId, user });
 
         let timeout: NodeJS.Timeout | null = null;
         SOCKET.on("documentEdited", (data: DocumentInterface) => {
@@ -74,40 +76,12 @@ const DocumentEditor: React.FC<DocumentEditorProps> = ({ documentId }) => {
             }
         });
 
-        SOCKET.on("cursor-move", (data) => {
-            console.log({ data, quill });
-            if (quill) {
-                const index = data?.selection?.index || 0;
-                const length = data?.selection?.length || 0;
-                console.log({ index, length });
-
-                // quill.formatText(index, length, "highlight", {
-                //     color: "#f3f",
-                //     id: "1",
-                // });
-                if (length > 0) {
-                    quill.formatText(index, length, "highlight", {
-                        color: "#f3f",
-                        id: "1",
-                    });
-                } else {
-                    const total = content.length;
-
-                    console.log({ total });
-                    quill.formatText(0, total, "highlight", {
-                        color: "#fff",
-                        id: "1",
-                    });
-                }
-            }
-        });
-
         return () => {
             SOCKET.emit("leaveDocument", { documentId });
             SOCKET.off("documentEdited");
             SOCKET.off("cursor-move");
         };
-    }, [content.length, documentId, quill]);
+    }, [content.length, documentId, quill, user]);
 
     const handleChange = (value: string) => {
         setContent(value);
@@ -137,40 +111,6 @@ const DocumentEditor: React.FC<DocumentEditorProps> = ({ documentId }) => {
         });
     };
 
-    const removeHighlight = () => {
-        if (!quill) return;
-        const editor = quill.getEditor();
-        const contents = editor.getContents();
-
-        // Iterate through each delta and remove 'highlight' format
-        contents.ops.forEach(
-            (op: {
-                attributes?: { highlight: unknown };
-                index?: number;
-                length?: number;
-            }) => {
-                if (op.attributes && op.attributes.highlight) {
-                    const { index, length } = op;
-                    editor.formatText(index, length, "highlight", false);
-                }
-            }
-        );
-
-        const updatedHtml = editor.root.innerHTML;
-        setContent(updatedHtml);
-    };
-
-    const handleChangeSelection = (range: Range) => {
-        console.log("Selection Change:", range);
-        SOCKET.emit("selection-change", {
-            _id: documentId,
-            selection: {
-                index: range?.index,
-                length: range?.length,
-            },
-        });
-    };
-
     return (
         <div>
             <input
@@ -185,7 +125,6 @@ const DocumentEditor: React.FC<DocumentEditorProps> = ({ documentId }) => {
                 ref={editorRef}
                 value={content}
                 onChange={handleChange}
-                onChangeSelection={handleChangeSelection}
                 className="w-full h-[85vh] p-0 textarea textarea-bordered pb-11"
                 modules={{}}
             />
