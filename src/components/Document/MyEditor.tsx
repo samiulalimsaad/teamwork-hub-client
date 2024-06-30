@@ -52,7 +52,7 @@ export const MyEditor: React.FC<MyEditorProps> = ({ value, handleChange }) => {
                         })
                     }
                 >
-                    Save a a New Version
+                    Commit Changes
                 </button>
                 <select
                     className="capitalize select select-bordered select-sm"
