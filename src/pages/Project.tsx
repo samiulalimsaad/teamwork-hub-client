@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Document from "../components/Document";
 import {
     editorSupportedLanguage,
@@ -21,9 +21,12 @@ import { Modal } from "../utils/ui/Modal";
 
 const Project: React.FC = () => {
     const { user } = useAuth();
+
     const { id: projectId } = useParams();
     const { data: project } = useFetchProjectById(projectId!);
     const { data: documents, refetch } = useFetchDocuments(projectId!);
+
+    const navigate = useNavigate();
     const createDocument = useCreateDocument();
     const [editing, setEditing] = useState<ProjectInterface>();
     const [isOpen, setIsOpen] = useState(false);
@@ -142,6 +145,8 @@ const Project: React.FC = () => {
                                         deleting._id
                                     );
                                     SOCKET.emit("newDocument", { projectId });
+                                    setDeleting(undefined);
+                                    navigate("/");
                                 }}
                             >
                                 Yes

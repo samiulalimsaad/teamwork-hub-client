@@ -215,9 +215,12 @@ const Projects: React.FC = () => {
                             </button>
                             <button
                                 className="btn btn-error btn-sm"
-                                onClick={() =>
-                                    deleteProject.mutate(deleting._id)
-                                }
+                                onClick={async () => {
+                                    await deleteProject.mutateAsync(
+                                        deleting._id
+                                    );
+                                    setDeleting(undefined);
+                                }}
                             >
                                 Yes
                             </button>
