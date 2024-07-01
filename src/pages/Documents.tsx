@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Document from "../components/Document";
+import {
+    editorSupportedLanguage,
+    editorTheme,
+} from "../components/Editor/editor.config";
 import EditProject from "../components/Project/EditProject";
 import { ProjectInterface } from "../interfaces/Project.interface";
 import { useAuth } from "../providers/hooks/auth";
@@ -31,6 +35,8 @@ const Documents: React.FC = () => {
             title: "Untitled",
             content: " ",
             project: projectId,
+            theme: editorTheme[0],
+            language: editorSupportedLanguage[0],
         };
         createDocument.mutate(newDocument);
     };
@@ -61,7 +67,7 @@ const Documents: React.FC = () => {
                         // onClick={handleCreateDocument}
                         onClick={() => setIsOpen(true)}
                     >
-                        Add a Project
+                        New Document
                     </button>
                 </div>
             </div>
