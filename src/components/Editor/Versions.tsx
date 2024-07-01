@@ -22,13 +22,20 @@ const Versions: React.FC<VersionProps> = ({ documentId, close }) => {
             <div className="grid-">
                 <div>
                     <ul className="w-full space-y-4 rounded-box">
-                        {versions?.data?.map((v) => (
+                        {versions?.data?.map((v, i) => (
                             <li
                                 key={v._id}
                                 className="flex items-center justify-between w-full border-b cursor-pointer hover:bg-accent/10 text-wrap"
                                 onClick={() => setVersion(v)}
                             >
-                                <span>{v._id}</span>
+                                <div>
+                                    <span className="mr-3 font-semibold">
+                                        {i + 1}.
+                                    </span>
+                                    <span className="drop-shadow-md">
+                                        {v._id}
+                                    </span>
+                                </div>
                                 <small
                                     className="justify-end text-xs opacity-30"
                                     title={`${moment(v.createdAt).format(
