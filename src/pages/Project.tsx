@@ -77,7 +77,6 @@ const Project: React.FC = () => {
                     )}
                     <button
                         className="btn btn-accent btn-xs"
-                        // onClick={handleCreateDocument}
                         onClick={() => setIsOpen(true)}
                     >
                         New Document
@@ -115,7 +114,10 @@ const Project: React.FC = () => {
             {editing?._id && (
                 <Modal title="Editing Project" isOpen={!!editing._id}>
                     <EditProject
-                        close={() => setEditing(undefined)}
+                        close={async () => {
+                            SOCKET.emit("newDocument", { projectId });
+                            setEditing(undefined);
+                        }}
                         projectId={editing?._id}
                     />
                 </Modal>
@@ -136,8 +138,11 @@ const Project: React.FC = () => {
                             </button>
                             <button
                                 className="btn btn-error btn-sm"
-                                onClick={() => {
-                                    deleteProject.mutateAsync(deleting._id);
+                                onClick={async () => {
+                                    await deleteProject.mutateAsync(
+                                        deleting._id
+                                    );
+                                    SOCKET.emit("newDocument", { projectId });
                                 }}
                             >
                                 Yes

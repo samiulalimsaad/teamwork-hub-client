@@ -1,9 +1,10 @@
 import { Editor } from "@monaco-editor/react";
 import moment from "moment";
 import { FC, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { DocumentInterface } from "../../interfaces/Document.interface";
 import { useDeleteDocument } from "../../services/hooks/document";
+import { SOCKET } from "../../utils/SOCKET";
 import { Modal } from "../../utils/ui/Modal";
 
 interface DocumentProps {
@@ -11,6 +12,7 @@ interface DocumentProps {
 }
 
 const Document: FC<DocumentProps> = ({ document }) => {
+    const { id: projectId } = useParams();
     const deleteDocument = useDeleteDocument();
     const [deleting, setDeleting] = useState<DocumentInterface>();
     console.log(document);
@@ -69,9 +71,12 @@ const Document: FC<DocumentProps> = ({ document }) => {
                             </button>
                             <button
                                 className="btn btn-error btn-sm"
-                                onClick={() =>
-                                    deleteDocument.mutate(document._id)
-                                }
+                                onClick={async () => {
+                                    SOCKET.emit("newDocument", { projectId });
+                                    await deleteDocument.mutateAsync(
+                                        document._id
+                                    );
+                                }}
                             >
                                 Yes
                             </button>
