@@ -29,6 +29,11 @@ const Navbar = () => {
                     </div>
                 </div>
                 <Link to="/" className="text-xl btn btn-ghost drop-shadow-md">
+                    <div className="avatar">
+                        <div className="w-6 rounded-full">
+                            <img src="/logo.png" />
+                        </div>
+                    </div>
                     TeamworkHub
                 </Link>
             </div>
