@@ -54,8 +54,12 @@ const Projects: React.FC = () => {
                                                     {project.title}
                                                 </h3>
                                                 <small className="text-xs opacity-40">
-                                                    createdBy:{" "}
-                                                    {project.createdBy?.name}
+                                                    ({project.documents?.length}{" "}
+                                                    {project.documents?.length >
+                                                    1
+                                                        ? "documents"
+                                                        : "document"}
+                                                    )
                                                 </small>
                                             </div>
                                             <p className="text-xs opacity-40">
