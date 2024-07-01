@@ -1,6 +1,4 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Quill } from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import useDebounce from "../../hooks/useDebounce";
 import { DocumentInterface } from "../../interfaces/Document.interface";
 import { useAuth } from "../../providers/hooks/auth";
@@ -8,11 +6,8 @@ import {
     useFetchDocumentById,
     useUpdateDocument,
 } from "../../services/hooks/document";
-import { Highlight } from "../../utils/CustomQuill";
 import { SOCKET } from "../../utils/SOCKET";
 import { MyEditor } from "../Editor/MyEditor";
-
-Quill.register(Highlight);
 
 interface DocumentEditorProps {
     documentId: string;
