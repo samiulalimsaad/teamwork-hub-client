@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Document from "../components/Document";
 import {
@@ -16,19 +16,30 @@ import {
     useDeleteProject,
     useFetchProjectById,
 } from "../services/hooks/project";
+import { SOCKET } from "../utils/SOCKET";
 import { Modal } from "../utils/ui/Modal";
 
 const Project: React.FC = () => {
     const { user } = useAuth();
     const { id: projectId } = useParams();
     const { data: project } = useFetchProjectById(projectId!);
-    const { data: documents } = useFetchDocuments(projectId!);
+    const { data: documents, refetch } = useFetchDocuments(projectId!);
     const createDocument = useCreateDocument();
     const [editing, setEditing] = useState<ProjectInterface>();
     const [isOpen, setIsOpen] = useState(false);
     const [deleting, setDeleting] = useState<ProjectInterface>();
 
     const deleteProject = useDeleteProject();
+
+    useEffect(() => {
+        SOCKET.on(`newDocument-${projectId}`, () => {
+            refetch();
+        });
+
+        return () => {
+            SOCKET.off(`newDocument-${projectId}`);
+        };
+    }, [projectId, refetch]);
 
     const handleCreateDocument = async () => {
         const newDocument = {
@@ -38,6 +49,8 @@ const Project: React.FC = () => {
             theme: editorTheme[0],
             language: editorSupportedLanguage[0],
         };
+        console.log("called");
+        SOCKET.emit("newDocument", { projectId });
         createDocument.mutate(newDocument);
     };
 
@@ -123,9 +136,9 @@ const Project: React.FC = () => {
                             </button>
                             <button
                                 className="btn btn-error btn-sm"
-                                onClick={() =>
-                                    deleteProject.mutate(deleting._id)
-                                }
+                                onClick={() => {
+                                    deleteProject.mutateAsync(deleting._id);
+                                }}
                             >
                                 Yes
                             </button>
