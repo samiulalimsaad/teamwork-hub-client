@@ -34,7 +34,7 @@ const Navbar = () => {
             </div>
             <div className="hidden navbar-center lg:flex"></div>
             <div className="navbar-end">
-                {user ? (
+                {user?.email ? (
                     <button onClick={logOut} className="btn">
                         Logout
                     </button>
