@@ -9,9 +9,9 @@ import {
     updateProject,
 } from "../api/project";
 
-export const useFetchProjects = () => {
+export const useFetchProjects = (email: string | undefined) => {
     return useQuery({
-        queryKey: ["projects"],
+        queryKey: ["projects", email],
         queryFn: fetchProjects,
     });
 };

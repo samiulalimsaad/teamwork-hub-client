@@ -34,7 +34,6 @@ export const AuthContext = createContext<AuthInfo | null>(null);
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const { data: me } = useCurrentUser();
-
     const { user, setUser, reset } = useUserStore();
     const [loading, setLoading] = useState(true);
     const { open, close } = useModalStore();
@@ -74,7 +73,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             password,
         };
         const { data } = await signInMutation.mutateAsync(credentials);
-        setUser(data);
+
         setLoading(false);
         close();
         return data;

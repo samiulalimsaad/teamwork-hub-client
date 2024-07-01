@@ -24,7 +24,7 @@ export const Modal: FC<ModalProps> = ({ title, isOpen, children }) => {
                         >
                             <DialogTitle
                                 as="h3"
-                                className="text-xl font-medium text-center"
+                                className="text-xl font-medium text-center drop-shadow-md"
                             >
                                 {title}
                             </DialogTitle>
