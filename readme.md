@@ -118,8 +118,4 @@ yarn test
 
 - **@testing-library/jest-dom** and **@testing-library/react**: Testing utilities for React applications that provide a set of helpers to test DOM elements and React components.
 - **@vitest/ui**: A UI component library for testing with `vitest`, providing visual feedback and interactions during testing.
-- **daisyui**: A lightweight CSS framework for Tailwind CSS, providing additional UI components and utilities.
-- **tailwindcss**: A utility-first CSS framework for rapidly building custom designs, enhancing frontend styling capabilities.
-- **typescript**: A typed superset of JavaScript that compiles to plain JavaScript, improving code reliability and scalability.
-- **vite**: A next-generation frontend tool that focuses on speed and modern JavaScript features, providing fast development and production builds.
 - **vitest**: A testing library for React applications that simplifies unit testing with a focus on integration with Vite, ensuring reliable and efficient testing workflows.
