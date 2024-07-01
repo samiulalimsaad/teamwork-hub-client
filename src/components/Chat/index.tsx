@@ -14,7 +14,7 @@ interface ChatProps {
 
 const Chat: React.FC<ChatProps> = ({ documentId }) => {
     const { data: chats, refetch } = useFetchChatByDocumentId(documentId);
-    const addFeedback = useAddChat();
+    const addChat = useAddChat();
 
     const [error, setError] = useState("");
     const [newParticipant, setNewParticipant] = useState<UserInterface>();
@@ -56,7 +56,7 @@ const Chat: React.FC<ChatProps> = ({ documentId }) => {
         };
         if (!feedbackData.content) return setError("Feedback is required");
 
-        addFeedback.mutate(feedbackData);
+        addChat.mutate(feedbackData);
         setTimeout(() => {
             SOCKET.emit("newMessage", { ...feedbackData, _id: documentId });
             form.reset();
