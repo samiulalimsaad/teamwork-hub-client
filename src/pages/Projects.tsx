@@ -43,64 +43,148 @@ const Projects: React.FC = () => {
             <div className="divider"></div>
             <div>
                 <div>
+                    <h3 className="font-semibold drop-shadow-md">
+                        My Projects:
+                    </h3>
                     <ul className="p-2 mx-auto my-8 space-y-8 border card rounded-box border-accent/10">
-                        {projects?.data?.map((project) => (
-                            <li key={project._id}>
-                                <div className="p-2 mx-auto hover:bg-accent/10">
-                                    <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-                                        <div>
-                                            <div className="flex items-center gap-4">
-                                                <h3 className="text-xl drop-shadow-md">
-                                                    {project.title}
-                                                </h3>
-                                                <small className="text-xs opacity-40">
-                                                    ({project.documents?.length}{" "}
-                                                    {project.documents?.length >
-                                                    1
-                                                        ? "documents"
-                                                        : "document"}
-                                                    )
-                                                </small>
+                        {projects?.data
+                            ?.filter((p) => p.createdBy.email === user?.email)
+                            .map((project) => (
+                                <li key={project._id}>
+                                    <div className="p-2 mx-auto hover:bg-accent/10">
+                                        <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+                                            <div>
+                                                <div className="flex items-center gap-4">
+                                                    <h3 className="text-xl drop-shadow-md">
+                                                        {project.title}
+                                                    </h3>
+                                                    <small className="text-xs opacity-40">
+                                                        (
+                                                        {
+                                                            project.documents
+                                                                ?.length
+                                                        }{" "}
+                                                        {project.documents
+                                                            ?.length > 1
+                                                            ? "documents"
+                                                            : "document"}
+                                                        )
+                                                    </small>
+                                                </div>
+                                                <p className="text-xs opacity-40">
+                                                    {project.description}
+                                                </p>
                                             </div>
-                                            <p className="text-xs opacity-40">
-                                                {project.description}
-                                            </p>
-                                        </div>
-                                        <div className="flex items-center gap-4">
-                                            {user?.email ===
-                                                project.createdBy?.email && (
-                                                <button
-                                                    className="btn btn-error btn-xs"
-                                                    onClick={() =>
-                                                        setDeleting(project)
-                                                    }
+                                            <div className="flex items-center gap-4">
+                                                {user?.email ===
+                                                    project.createdBy
+                                                        ?.email && (
+                                                    <button
+                                                        className="btn btn-error btn-xs"
+                                                        onClick={() =>
+                                                            setDeleting(project)
+                                                        }
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                )}
+                                                {user?.email ===
+                                                    project.createdBy
+                                                        ?.email && (
+                                                    <button
+                                                        className="btn btn-warning btn-xs"
+                                                        onClick={() =>
+                                                            setEditing(project)
+                                                        }
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                )}
+                                                <Link
+                                                    to={`/project/${project._id}`}
+                                                    className="btn btn-accent btn-xs"
                                                 >
-                                                    Delete
-                                                </button>
-                                            )}
-                                            {user?.email ===
-                                                project.createdBy?.email && (
-                                                <button
-                                                    className="btn btn-warning btn-xs"
-                                                    onClick={() =>
-                                                        setEditing(project)
-                                                    }
-                                                >
-                                                    Edit
-                                                </button>
-                                            )}
-                                            <Link
-                                                to={`/project/${project._id}`}
-                                                className="btn btn-accent btn-xs"
-                                            >
-                                                details
-                                            </Link>
+                                                    details
+                                                </Link>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="my-0 divider before:bg-accent/20 after:bg-accent/20"></div>
-                            </li>
-                        ))}
+                                    <div className="my-0 divider before:bg-accent/20 after:bg-accent/20"></div>
+                                </li>
+                            ))}
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 className="font-semibold drop-shadow-md">
+                        Others Projects:
+                    </h3>
+                    <ul className="p-2 mx-auto my-8 space-y-8 border card rounded-box border-accent/10">
+                        {projects?.data
+                            ?.filter((p) => p.createdBy.email !== user?.email)
+                            .map((project) => (
+                                <li key={project._id}>
+                                    <div className="p-2 mx-auto hover:bg-accent/10">
+                                        <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+                                            <div>
+                                                <div className="flex items-center gap-4">
+                                                    <h3 className="text-xl drop-shadow-md">
+                                                        {project.title}
+                                                    </h3>
+                                                    <small className="text-xs opacity-40">
+                                                        (
+                                                        {
+                                                            project.documents
+                                                                ?.length
+                                                        }{" "}
+                                                        {project.documents
+                                                            ?.length > 1
+                                                            ? "documents"
+                                                            : "document"}
+                                                        )
+                                                    </small>
+                                                </div>
+                                                <p className="text-xs opacity-40">
+                                                    {project.description}
+                                                </p>
+                                            </div>
+                                            <div className="flex items-center gap-4">
+                                                {user?.email ===
+                                                    project.createdBy
+                                                        ?.email && (
+                                                    <button
+                                                        className="btn btn-error btn-xs"
+                                                        onClick={() =>
+                                                            setDeleting(project)
+                                                        }
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                )}
+                                                {user?.email ===
+                                                    project.createdBy
+                                                        ?.email && (
+                                                    <button
+                                                        className="btn btn-warning btn-xs"
+                                                        onClick={() =>
+                                                            setEditing(project)
+                                                        }
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                )}
+                                                <Link
+                                                    to={`/project/${project._id}`}
+                                                    className="btn btn-accent btn-xs"
+                                                >
+                                                    details
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="my-0 divider before:bg-accent/20 after:bg-accent/20"></div>
+                                </li>
+                            ))}
                     </ul>
                 </div>
             </div>
