@@ -15,7 +15,6 @@ const Document: FC<DocumentProps> = ({ document }) => {
     const { id: projectId } = useParams();
     const deleteDocument = useDeleteDocument();
     const [deleting, setDeleting] = useState<DocumentInterface>();
-    console.log(document);
 
     return (
         <div className="h-full shadow-xl card card-compact bg-base-100">

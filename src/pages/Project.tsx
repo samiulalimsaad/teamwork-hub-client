@@ -49,7 +49,6 @@ const Project: React.FC = () => {
             theme: editorTheme[0],
             language: editorSupportedLanguage[0],
         };
-        console.log("called");
         SOCKET.emit("newDocument", { projectId });
         createDocument.mutate(newDocument);
     };

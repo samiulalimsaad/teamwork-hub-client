@@ -29,8 +29,6 @@ const Chat: React.FC<ChatProps> = ({ documentId }) => {
 
     useEffect(() => {
         SOCKET.on(`document-${documentId}`, (data: { user: UserInterface }) => {
-            console.log({ data });
-
             setNewParticipant(data.user);
         });
         SOCKET.on(`messageReceived-${documentId}`, async () => {

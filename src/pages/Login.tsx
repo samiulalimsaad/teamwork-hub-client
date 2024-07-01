@@ -26,7 +26,6 @@ const Login = () => {
         } catch (error) {
             if (error instanceof AxiosError) {
                 const err = error.response?.data.error;
-                console.log(err);
                 setError(err);
             }
         }
