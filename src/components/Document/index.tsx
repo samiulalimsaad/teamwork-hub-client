@@ -1,4 +1,5 @@
 import { Editor } from "@monaco-editor/react";
+import moment from "moment";
 import { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import { DocumentInterface } from "../../interfaces/Document.interface";
@@ -33,6 +34,9 @@ const Document: FC<DocumentProps> = ({ document }) => {
                         ? document.title.slice(0, 25) + " ..."
                         : document.title}
                 </h2>
+                <small className="opacity-25">
+                    Last updated at {moment(document.updatedAt).fromNow()}
+                </small>
 
                 <div className="justify-between mt-auto card-actions">
                     <button
