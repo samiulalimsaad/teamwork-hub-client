@@ -100,6 +100,32 @@ or
 yarn test
 ```
 
+### Docker
+
+Ensure Docker already installed on the machine. Build and run the Docker image using the following commands:
+
+1. Build the Docker image:
+
+```bash
+docker build -t teamwork-hub-backend .
+```
+
+2. Run the Docker container:
+
+```bash
+docker run -p 5000:5000 --env-file .env teamwork-hub-backend
+```
+
+The backend server will be running at `http://localhost:5000`.
+
+### Docker Compose
+
+To start the application with Docker Compose, use the following command:
+
+```bash
+docker-compose up --build
+```
+
 ## Package Details
 
 ### Main Dependencies
