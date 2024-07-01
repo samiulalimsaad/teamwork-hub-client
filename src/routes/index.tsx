@@ -5,11 +5,13 @@ import Login from "../pages/Login";
 import Project from "../pages/Project";
 import Projects from "../pages/Projects";
 import Register from "../pages/Register";
+import ErrorComponent from "../utils/ui/ErrorComponent";
 
 export const router = createBrowserRouter([
     {
         path: "/",
         element: <MainLayout />,
+        errorElement: <ErrorComponent />,
         children: [
             { path: "/", element: <Projects /> },
             { path: "/project/:id", element: <Project /> },
@@ -19,9 +21,11 @@ export const router = createBrowserRouter([
     {
         path: "login",
         element: <Login />,
+        errorElement: <ErrorComponent />,
     },
     {
         path: "register",
         element: <Register />,
+        errorElement: <ErrorComponent />,
     },
 ]);
