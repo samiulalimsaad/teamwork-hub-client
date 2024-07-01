@@ -22,6 +22,6 @@ export const editorSupportedLanguage = [
     "xml",
     "yaml",
     "text",
-];
+] as const;
 
-export const editorTheme = ["light", "vs-dark"];
+export const editorTheme = ["light", "vs-dark"] as const;
