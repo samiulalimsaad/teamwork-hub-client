@@ -24,7 +24,10 @@ const MainLayout = () => {
             </div>
             <div className="w-full p-4 mx-auto sm:w-3/5">
                 {loading ? (
-                    <span className="loading loading-dots loading-lg"></span>
+                    <div className="grid w-full h-full place-items-center">
+                        <span className="loading loading-dots loading-lg"></span>
+                        <p>Authenticating...</p>
+                    </div>
                 ) : (
                     <Outlet />
                 )}

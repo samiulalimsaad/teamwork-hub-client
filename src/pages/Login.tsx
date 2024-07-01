@@ -2,9 +2,11 @@ import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../providers/hooks/auth";
+import { useUserStore } from "../store/user";
 import Error from "../utils/ui/Error";
 
 const Login = () => {
+    const { setUser } = useUserStore();
     const { user, loading, signIn } = useAuth() || {};
     const navigate = useNavigate();
     const [error, setError] = useState("");
@@ -20,7 +22,8 @@ const Login = () => {
         const password = form.password.value;
 
         try {
-            await signIn(email, password);
+            const data = await signIn(email, password);
+            setUser(data);
             form.reset();
             navigate("/");
         } catch (error) {
