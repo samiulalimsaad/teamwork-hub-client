@@ -9,22 +9,23 @@ import { Modal } from "../utils/ui/Modal";
 
 const Projects: React.FC = () => {
     const { user } = useAuth();
-    const { data: projects } = useFetchProjects();
+    const { data: projects } = useFetchProjects(user?.email);
     const [isOpen, setIsOpen] = useState(false);
     const [editing, setEditing] = useState<ProjectInterface>();
+    const [deleting, setDeleting] = useState<ProjectInterface>();
     const [isAnimating, setIsAnimating] = useState<boolean>(true);
+
+    const deleteProject = useDeleteProject();
 
     useEffect(() => {
         const tout = setTimeout(() => {
             setIsAnimating(false);
-        }, 4500);
+        }, 3500);
 
         return () => {
             clearTimeout(tout);
         };
     }, []);
-
-    const deleteProject = useDeleteProject();
 
     return (
         <div>
@@ -42,101 +43,39 @@ const Projects: React.FC = () => {
             <div className="divider"></div>
             <div>
                 <div>
-                    <h4 className="text-xl drop-shadow-md">My projects:</h4>
-
                     <ul className="p-2 mx-auto my-8 space-y-8 border card rounded-box border-accent/10">
-                        {projects?.data
-                            ?.filter((p) => p.createdBy?.email === user?.email)
-                            ?.map((project) => (
-                                <li key={project._id}>
-                                    <div className="p-2 mx-auto hover:bg-accent/10">
-                                        <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-                                            <div>
+                        {projects?.data?.map((project) => (
+                            <li key={project._id}>
+                                <div className="p-2 mx-auto hover:bg-accent/10">
+                                    <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+                                        <div>
+                                            <div className="flex items-center gap-4">
                                                 <h3 className="text-xl drop-shadow-md">
                                                     {project.title}
                                                 </h3>
-                                                <p className="text-xs opacity-40">
-                                                    {project.description}
-                                                </p>
+                                                <small className="text-xs opacity-40">
+                                                    createdBy:{" "}
+                                                    {project.createdBy?.name}
+                                                </small>
                                             </div>
-                                            <div className="flex items-center gap-4">
-                                                {user?.email ===
-                                                    project.createdBy
-                                                        ?.email && (
-                                                    <button
-                                                        className="btn btn-error btn-xs"
-                                                        onClick={() =>
-                                                            deleteProject.mutate(
-                                                                project._id
-                                                            )
-                                                        }
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                )}
-                                                {user?.email ===
-                                                    project.createdBy
-                                                        ?.email && (
-                                                    <button
-                                                        className="btn btn-warning btn-xs"
-                                                        onClick={() =>
-                                                            setEditing(project)
-                                                        }
-                                                    >
-                                                        Edit
-                                                    </button>
-                                                )}
-                                                <Link
-                                                    to={`/project/${project._id}`}
-                                                    className="btn btn-accent btn-xs"
-                                                >
-                                                    details
-                                                </Link>
-                                            </div>
+                                            <p className="text-xs opacity-40">
+                                                {project.description}
+                                            </p>
                                         </div>
-                                    </div>
-                                    <div className="my-0 divider before:bg-accent/20 after:bg-accent/20"></div>
-                                </li>
-                            ))}
-                    </ul>
-                </div>
-                <div>
-                    <h4 className="text-xl drop-shadow-md">Others projects:</h4>
-                    <ul className="p-2 mx-auto my-8 space-y-8 border card rounded-box border-accent/10">
-                        {projects?.data
-                            ?.filter((p) => p.createdBy?.email !== user?.email)
-                            .map((project) => (
-                                <li key={project._id}>
-                                    <div className="p-2 mx-auto hover:bg-accent/10">
-                                        <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-                                            <div>
-                                                <div className="flex items-center gap-4">
-                                                    <h3 className="text-xl drop-shadow-md">
-                                                        {project.title}
-                                                    </h3>
-                                                    <small className="text-xs opacity-40">
-                                                        createdBy:{" "}
-                                                        {
-                                                            project.createdBy
-                                                                ?.name
-                                                        }
-                                                    </small>
-                                                </div>
-                                                <p className="text-xs opacity-40">
-                                                    {project.description}
-                                                </p>
-                                            </div>
-                                            <div className="flex items-center gap-4">
+                                        <div className="flex items-center gap-4">
+                                            {user?.email ===
+                                                project.createdBy?.email && (
                                                 <button
                                                     className="btn btn-error btn-xs"
                                                     onClick={() =>
-                                                        deleteProject.mutate(
-                                                            project._id
-                                                        )
+                                                        setDeleting(project)
                                                     }
                                                 >
                                                     Delete
                                                 </button>
+                                            )}
+                                            {user?.email ===
+                                                project.createdBy?.email && (
                                                 <button
                                                     className="btn btn-warning btn-xs"
                                                     onClick={() =>
@@ -145,18 +84,19 @@ const Projects: React.FC = () => {
                                                 >
                                                     Edit
                                                 </button>
-                                                <Link
-                                                    to={`/project/${project._id}`}
-                                                    className="btn btn-accent btn-xs"
-                                                >
-                                                    details
-                                                </Link>
-                                            </div>
+                                            )}
+                                            <Link
+                                                to={`/project/${project._id}`}
+                                                className="btn btn-accent btn-xs"
+                                            >
+                                                details
+                                            </Link>
                                         </div>
                                     </div>
-                                    <div className="my-0 divider before:bg-accent/20 after:bg-accent/20"></div>
-                                </li>
-                            ))}
+                                </div>
+                                <div className="my-0 divider before:bg-accent/20 after:bg-accent/20"></div>
+                            </li>
+                        ))}
                     </ul>
                 </div>
             </div>
@@ -169,6 +109,32 @@ const Projects: React.FC = () => {
                         close={() => setEditing(undefined)}
                         projectId={editing?._id}
                     />
+                </Modal>
+            )}
+
+            {deleting?._id && (
+                <Modal
+                    title="Do you want to delete the Project?"
+                    isOpen={!!deleting._id}
+                >
+                    <div>
+                        <div className="flex items-center justify-center gap-4">
+                            <button
+                                className="btn btn-info btn-sm"
+                                onClick={() => setDeleting(undefined)}
+                            >
+                                No
+                            </button>
+                            <button
+                                className="btn btn-error btn-sm"
+                                onClick={() =>
+                                    deleteProject.mutate(deleting._id)
+                                }
+                            >
+                                Yes
+                            </button>
+                        </div>
+                    </div>
                 </Modal>
             )}
         </div>

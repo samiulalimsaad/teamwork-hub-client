@@ -1,8 +1,9 @@
 import { Editor } from "@monaco-editor/react";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import { DocumentInterface } from "../../interfaces/Document.interface";
 import { useDeleteDocument } from "../../services/hooks/document";
+import { Modal } from "../../utils/ui/Modal";
 
 interface DocumentProps {
     document: DocumentInterface;
@@ -10,6 +11,7 @@ interface DocumentProps {
 
 const Document: FC<DocumentProps> = ({ document }) => {
     const deleteDocument = useDeleteDocument();
+    const [deleting, setDeleting] = useState<DocumentInterface>();
 
     return (
         <div className="h-full shadow-xl card card-compact bg-base-100">
@@ -35,7 +37,7 @@ const Document: FC<DocumentProps> = ({ document }) => {
                 <div className="justify-between mt-auto card-actions">
                     <button
                         className="w-5/12 btn btn-warning btn-xs btn-outline"
-                        onClick={() => deleteDocument.mutate(document._id)}
+                        onClick={() => setDeleting(document)}
                     >
                         Delete
                     </button>
@@ -47,6 +49,32 @@ const Document: FC<DocumentProps> = ({ document }) => {
                     </Link>
                 </div>
             </div>
+
+            {deleting?._id && (
+                <Modal
+                    title="Do you want to delete the Document?"
+                    isOpen={!!deleting._id}
+                >
+                    <div>
+                        <div className="flex items-center justify-center gap-4">
+                            <button
+                                className="btn btn-info btn-sm"
+                                onClick={() => setDeleting(undefined)}
+                            >
+                                No
+                            </button>
+                            <button
+                                className="btn btn-error btn-sm"
+                                onClick={() =>
+                                    deleteDocument.mutate(document._id)
+                                }
+                            >
+                                Yes
+                            </button>
+                        </div>
+                    </div>
+                </Modal>
+            )}
         </div>
     );
 };
